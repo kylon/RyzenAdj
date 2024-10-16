@@ -1,19 +1,42 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.23)
 
-PROJECT(ryzenadjcli)
+project(ryzenadj)
 
-set(CMAKE_C_VISIBILITY_PRESET hidden)
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-
-option(BUILD_SHARED_LIBS OFF)
-add_subdirectory(lib)
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
 include(CheckIPOSupported)
 check_ipo_supported(RESULT has_ipo OUTPUT error)
 
-add_executable(${PROJECT_NAME} argparse.c main.c)
-set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "ryzenadj")
+set(PROJECT_SOURCES
+    lib/nb_smu_ops.c
+    lib/api.c
+    lib/cpuid.c
+)
+
+set(PUB_HEADERS
+    lib/ryzenadj.h
+)
+
+if (WIN32)
+    set(LINK_LIBS WinRing0x64)
+
+    list(APPEND PROJECT_SOURCES
+        lib/osdep_win32.cpp
+    )
+
+elseif (LINUX)
+    set(LINK_LIBS pci)
+
+    list(APPEND PROJECT_SOURCES
+        lib/osdep_linux.c
+    )
+
+else ()
+    message(FATAL_ERROR "!Unsupported OS!")
+endif ()
+
+add_library(${PROJECT_NAME} ${PUB_HEADERS} ${PROJECT_SOURCES})
+add_library("RYADJ::RyzenAdjLib" ALIAS ${PROJECT_NAME})
 
 if(has_ipo)
     message(STATUS "${PROJECT_NAME}: IPO / LTO enabled")
@@ -21,9 +44,22 @@ if(has_ipo)
 endif()
 
 if (WIN32)
-    target_link_directories(${PROJECT_NAME} PRIVATE win32)
+    set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "libryzenadj")
+    target_link_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/win32")
 endif ()
 
+target_compile_definitions(${PROJECT_NAME} PUBLIC _LIBRYZENADJ_INTERNAL)
+target_link_libraries(${PROJECT_NAME} ${LINK_LIBS})
+
+target_sources(${PROJECT_NAME} PUBLIC
+    FILE_SET rylib_headers
+    TYPE HEADERS
+    FILES ${PUB_HEADERS}
+)
+
 include(GNUInstallDirs)
-target_link_libraries(${PROJECT_NAME} RYADJ::RyzenAdjLib)
-install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(TARGETS ${PROJECT_NAME}
+    FILE_SET rylib_headers DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
