@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LGPL
-/* Copyright (C) 2018-2019 Jiaxun Yang <jiaxun.yang@flygoat.com> */
+/* Copyright (C) 2018-2019 Jiaxun Yang <jiaxun.yang@flygoat.com>
+ * 2025 kylon - 0.20
+ */
 /* Access PCI Config Space - winring0 */
-
 extern "C" {
-#include "nb_smu_ops.h"
+#include "osdep.h"
 }
-#include "Windows.h"
 #include "OlsApi.h"
 #include "OlsDef.h"
 
@@ -16,77 +16,80 @@ HINSTANCE hInpOutDll;
 typedef BOOL (__stdcall *lpIsInpOutDriverOpen)(void);
 typedef PBYTE (__stdcall *lpMapPhysToLin)(uintptr_t pbPhysAddr, size_t dwPhysSize, HANDLE *pPhysicalMemoryHandle);
 typedef BOOL (__stdcall *lpUnmapPhysicalMemory)(HANDLE PhysicalMemoryHandle, uintptr_t pbLinAddr);
-typedef BOOL (__stdcall *lpGetPhysLong)(uintptr_t pbPhysAddr, u32 *pdwPhysVal);
+typedef BOOL (__stdcall *lpGetPhysLong)(uintptr_t pbPhysAddr, uint32_t *pdwPhysVal);
 lpIsInpOutDriverOpen gfpIsInpOutDriverOpen;
 lpGetPhysLong gfpGetPhysLong;
 lpMapPhysToLin gfpMapPhysToLin;
 lpUnmapPhysicalMemory gfpUnmapPhysicalMemory;
-u32 *pdwLinAddr;
+uint32_t *pdwLinAddr;
 HANDLE physicalMemoryHandle;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-
-extern "C" pci_obj_t init_pci_obj(){
+pci_obj_t init_pci_obj() {
     InitializeOls();
-    int dllStatus = GetDllStatus();
-    switch(dllStatus)
-    {
-        case OLS_DLL_NO_ERROR: return &nb_pci_obj;
+
+    const DWORD dllStatus = GetDllStatus();
+
+    switch (dllStatus) {
+        case OLS_DLL_NO_ERROR:
+            return &nb_pci_obj;
         case OLS_DLL_UNSUPPORTED_PLATFORM:
-            printf("WinRing0 Err: Unsupported Plattform\n");
+            DBG("WinRing0 Err: Unsupported Plattform\n");
             break;
         case OLS_DLL_DRIVER_NOT_LOADED:
-            printf("WinRing0 Err: Driver not loaded\n");
+            DBG("WinRing0 Err: Driver not loaded\n");
             break;
         case OLS_DLL_DRIVER_NOT_FOUND:
-            printf("WinRing0 Err: Driver not found\n");
+            DBG("WinRing0 Err: Driver not found\n");
             break;
         case OLS_DLL_DRIVER_UNLOADED:
-            printf("WinRing0 Err: Driver unloaded\n");
+            DBG("WinRing0 Err: Driver unloaded\n");
             break;
         case OLS_DLL_DRIVER_NOT_LOADED_ON_NETWORK:
-            printf("WinRing0 Err: Driver not loaded on network\n");
+            DBG("WinRing0 Err: Driver not loaded on network\n");
             break;
         case OLS_DLL_UNKNOWN_ERROR:
-            printf("WinRing0 Err: unknown error\n");
+            DBG("WinRing0 Err: unknown error\n");
             break;
         default:
-            printf("WinRing0 Err: unknown status code %d\n", dllStatus);
+            DBG("WinRing0 Err: unknown status code %lu\n", dllStatus);
+            break;
     }
-    
+
     return NULL;
 }
 
-extern "C" nb_t get_nb(pci_obj_t obj){
+nb_t get_nb(pci_obj_t obj) {
     return &nb_pci_address;
 }
 
-extern "C" void free_nb(nb_t){
-    return;
-}
+void free_nb(nb_t) {}
 
-extern "C" void free_pci_obj(pci_obj_t obj){
+void free_pci_obj(pci_obj_t obj) {
+  	if (!obj)
+    	return;
+
     DeinitializeOls();
 }
 
-extern "C" u32 smn_reg_read(nb_t nb, u32 addr)
-{
-    WritePciConfigDword(*nb, NB_PCI_REG_ADDR_ADDR, (addr & (~0x3)));
+uint32_t smn_reg_read(nb_t nb, uint32_t addr) {
+    WritePciConfigDword(*nb, NB_PCI_REG_ADDR_ADDR, addr & (~0x3));
     return ReadPciConfigDword(*nb, NB_PCI_REG_DATA_ADDR);
 }
 
-extern "C" void smn_reg_write(nb_t nb, u32 addr, u32 data)
-{
+void smn_reg_write(nb_t nb, uint32_t addr, uint32_t data) {
     WritePciConfigDword(*nb, NB_PCI_REG_ADDR_ADDR, addr);
     WritePciConfigDword(*nb, NB_PCI_REG_DATA_ADDR, data);
 }
 
-extern "C" mem_obj_t init_mem_obj(uintptr_t physAddr){
-    hInpOutDll = LoadLibrary ( "inpoutx64.DLL" );
+mem_obj_t init_mem_obj(uintptr_t physAddr) {
+    hInpOutDll = LoadLibrary ("inpoutx64.DLL");
 
-    if(hInpOutDll == NULL)
-    {
-        printf("Could not load inpoutx64.DLL\n");
+    if (hInpOutDll == NULL) {
+        DBG("Could not load inpoutx64.DLL\n");
         return NULL;
     }
 
@@ -95,39 +98,41 @@ extern "C" mem_obj_t init_mem_obj(uintptr_t physAddr){
     gfpMapPhysToLin = (lpMapPhysToLin)GetProcAddress(hInpOutDll, "MapPhysToLin");
     gfpUnmapPhysicalMemory = (lpUnmapPhysicalMemory)GetProcAddress(hInpOutDll, "UnmapPhysicalMemory");
 
-    if(!gfpIsInpOutDriverOpen())
-    {
-        printf("Could not open inpoutx64 driver\n");
+    if (!gfpIsInpOutDriverOpen()) {
+        DBG("Could not open inpoutx64 driver\n");
         return NULL;
     }
 
-    pdwLinAddr = (u32*)gfpMapPhysToLin(physAddr, 0x1000, &physicalMemoryHandle);
-    if (pdwLinAddr == NULL){
-        printf("failed to map memory\n");
+    pdwLinAddr = (uint32_t*)gfpMapPhysToLin(physAddr, 0x1000, &physicalMemoryHandle);
+    if (pdwLinAddr == NULL) {
+        DBG("failed to map memory\n");
         return NULL;
     }
 
     return &hInpOutDll;
 }
 
-extern "C" void free_mem_obj(mem_obj_t hInpOutDll)
-{
+void free_mem_obj(mem_obj_t obj) {
+	if (!obj)
+		return;
+
     gfpUnmapPhysicalMemory(physicalMemoryHandle, *pdwLinAddr);
-    FreeLibrary((HINSTANCE)hInpOutDll);
+    FreeLibrary((HINSTANCE)obj);
 }
 
-extern "C" int copy_pm_table(void *buffer, size_t size)
-{
+int copy_pm_table(void *buffer, const size_t size) {
     memcpy(buffer, pdwLinAddr, size);
     return 0;
 }
 
-extern "C" int compare_pm_table(void *buffer, size_t size)
-{
+int compare_pm_table(const void *buffer, const size_t size) {
     return memcmp(buffer, pdwLinAddr, size);
 }
 
-extern "C" bool is_using_smu_driver()
-{
+bool is_using_smu_driver() {
     return false;
 }
+
+#ifdef __cplusplus
+}
+#endif

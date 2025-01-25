@@ -2,15 +2,20 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.23)
 
 project(ryzenadj)
 
+string(TOLOWER ${CMAKE_BUILD_TYPE} build_type)
+
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
 include(CheckIPOSupported)
 check_ipo_supported(RESULT has_ipo OUTPUT error)
 
 set(PROJECT_SOURCES
-    lib/nb_smu_ops.c
-    lib/api.c
-    lib/cpuid.c
+    lib/osdep.h
+    lib/smu_access.h
+    lib/smu_access.c
+    lib/ryzen_opts.h
+    lib/ryzen_opts.c
+    lib/ryzenadj.c
 )
 
 set(PUB_HEADERS
@@ -38,7 +43,12 @@ endif ()
 add_library(${PROJECT_NAME} ${PUB_HEADERS} ${PROJECT_SOURCES})
 add_library("RYADJ::RyzenAdjLib" ALIAS ${PROJECT_NAME})
 
-if(has_ipo)
+if (build_type MATCHES debug)
+    message(STATUS "${PROJECT_NAME}: debug prints are enabled")
+    target_compile_definitions(${PROJECT_NAME} PRIVATE RYZENADJ_DEBUG)
+endif ()
+
+if (has_ipo)
     message(STATUS "${PROJECT_NAME}: IPO / LTO enabled")
     set_property(TARGET ${PROJECT_NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
 endif()
@@ -48,7 +58,7 @@ if (WIN32)
     target_link_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/win32")
 endif ()
 
-target_compile_definitions(${PROJECT_NAME} PUBLIC _LIBRYZENADJ_INTERNAL)
+target_compile_definitions(${PROJECT_NAME} PUBLIC LIBRYZENADJ_EXPORT)
 target_link_libraries(${PROJECT_NAME} ${LINK_LIBS})
 
 target_sources(${PROJECT_NAME} PUBLIC

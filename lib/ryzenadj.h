@@ -1,176 +1,181 @@
-/* SPDX-License-Identifier: LGPL */
-/* Copyright (C) 2019 Jiaxun Yang <jiaxun.yang@flygoat.com> */
-/* RyzenAdj API */
+// SPDX-License-Identifier: LGPL
+/* Copyright (C) 2018-2019 Jiaxun Yang <jiaxun.yang@flygoat.com>
+ * 2025 kylon - 0.20
+ */
+#pragma once
 
-#ifndef RYZENADJ_H
-#define RYZENADJ_H
+#include <stdint.h>
+
+#define RYZENADJ_REVISION_VER 0
+#define RYZENADJ_MAJOR_VER 20
+#define RYZENADJ_MINIOR_VER 0
+
+#ifdef _WIN32
+#define CALL __stdcall
+
+#ifdef LIBRYZENADJ_EXPORT
+#define EXP __declspec(dllexport)
+#else
+#define EXP __declspec(dllimport)
+#endif
+
+#else
+#define CALL
+
+#ifdef LIBRYZENADJ_EXPORT
+#define EXP __attribute__((visibility("default")))
+#else
+#define EXP
+#endif
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define RYZENADJ_REVISION_VER 0
-#define RYZENADJ_MAJOR_VER 16
-#define RYZENADJ_MINIOR_VER 0
+typedef enum {
+    FAM_UNKNOWN = -1,
+    FAM_RAVEN = 0,
+    FAM_PICASSO,
+    FAM_RENOIR,
+    FAM_CEZANNE,
+    FAM_DALI,
+    FAM_LUCIENNE,
+    FAM_VANGOGH,
+    FAM_REMBRANDT,
+    FAM_MENDOCINO,
+    FAM_PHOENIX,
+    FAM_HAWKPOINT,
+    FAM_STRIXPOINT
+} RYZEN_FAMILY;
 
-enum ryzen_family {
-        WAIT_FOR_LOAD = -2,
-        FAM_UNKNOWN = -1,
-        FAM_RAVEN = 0,
-        FAM_PICASSO,
-        FAM_RENOIR,
-        FAM_CEZANNE,
-        FAM_DALI,
-        FAM_LUCIENNE,
-        FAM_VANGOGH,
-        FAM_REMBRANDT,
-        FAM_MENDOCINO,
-        FAM_PHOENIX,
-        FAM_HAWKPOINT,
-        FAM_STRIXPOINT,
-        FAM_END
-};
+typedef enum {
+    ADJ_OPT_STAPM_LIMIT = 0, // \_SB.ALIB (0x0c, [size, 0x05, val])
+    ADJ_OPT_FAST_LIMIT, // \_SB.ALIB (0x0c, [size, 0x06, val])
+    ADJ_OPT_SLOW_LIMIT, // \_SB.ALIB (0x0c, [size, 0x07, val])
+    ADJ_OPT_SLOW_TIME, // \_SB.ALIB (0x0c, [size, 0x08, val])
+    ADJ_OPT_STAPM_TIME, // \_SB.ALIB (0x0c, [size, 0x01, val])
+    ADJ_OPT_TCTL_TEMP, // \_SB.ALIB (0x0c, [size, 0x03, val])
+    ADJ_OPT_VRM_CURRENT, // \_SB.ALIB (0x0c, [size, 0x0b, val])
+    ADJ_OPT_VRMSOC_CURRENT, // \_SB.ALIB (0x0c, [size, 0x0e, val])
+    ADJ_OPT_VRMGFX_CURRENT,
+    ADJ_OPT_VRMCVIP_CURRENT,
+    ADJ_OPT_VRMMAX_CURRENT, // \_SB.ALIB (0x0c, [size, 0x0c, val])
+    ADJ_OPT_VRMGFXMAX_CURRENT,
+    ADJ_OPT_VRMSOCMAX_CURRENT, // \_SB.ALIB (0x0c, [size, 0x11, val])
+    ADJ_OPT_PSI0_CURRENT,
+    ADJ_OPT_PSI3_CPU_CURRENT,
+    ADJ_OPT_PSI0_SOC_CURRENT,
+    ADJ_OPT_PSI3_GFX_CURRENT,
+    ADJ_OPT_MAX_GFXCLK_FREQ,
+    ADJ_OPT_MIN_GFXCLK_FREQ,
+    ADJ_OPT_MAX_SOCCLK_FREQ,
+    ADJ_OPT_MIN_SOCCLK_FREQ,
+    ADJ_OPT_MAX_FCLK_FREQ,
+    ADJ_OPT_MIN_FCLK_FREQ,
+    ADJ_OPT_MAX_VCN,
+    ADJ_OPT_MIN_VCN,
+    ADJ_OPT_MAX_LCLK,
+    ADJ_OPT_MIN_LCLK,
+    ADJ_OPT_PROCHOT_DEASSERTION_RAMP, // \_SB.ALIB (0x0c, [size, 0x09, val])
+    ADJ_OPT_APU_SKIN_TEMP_LIMIT, // \_SB.ALIB (0x0c, [size, 0x22, val])
+    ADJ_OPT_DGPU_SKIN_TEMP_LIMIT, // \_SB.ALIB (0x0c, [size, 0x23, val])
+    ADJ_OPT_APU_SLOW_LIMIT, // \_SB.ALIB (0x0c, [size, 0x13, val])
+    ADJ_OPT_SKIN_TEMP_POWER_LIMIT, // \_SB.ALIB (0x0c, [size, 0x2e, val])
+    ADJ_OPT_GFX_CLK,
+    ADJ_OPT_OC_CLK,
+    ADJ_OPT_PER_CORE_OC_CLK,
+    ADJ_OPT_OC_VOLT,
+    ADJ_OPT_DISABLE_OC,
+    ADJ_OPT_ENABLE_OC,
+    ADJ_OPT_CCLK_SETPOINT, // \_SB.ALIB (0x01, [size, 0x1]) power-saving
+    ADJ_OPT_CCLK_BUSY, // \_SB.ALIB (0x01, [size, 0x0]) max-performance
+    ADJ_OPT_COALL,
+    ADJ_OPT_COPER,
+    ADJ_OPT_COGFX,
+    ADJ_OPT_CORE_0_POWER,
+    ADJ_OPT_CORE_1_POWER,
+    ADJ_OPT_CORE_2_POWER,
+    ADJ_OPT_CORE_3_POWER,
+    ADJ_OPT_CORE_4_POWER,
+    ADJ_OPT_CORE_5_POWER,
+    ADJ_OPT_CORE_6_POWER,
+    ADJ_OPT_CORE_7_POWER,
+    ADJ_OPT_CORE_0_VOLT,
+    ADJ_OPT_CORE_1_VOLT,
+    ADJ_OPT_CORE_2_VOLT,
+    ADJ_OPT_CORE_3_VOLT,
+    ADJ_OPT_CORE_4_VOLT,
+    ADJ_OPT_CORE_5_VOLT,
+    ADJ_OPT_CORE_6_VOLT,
+    ADJ_OPT_CORE_7_VOLT,
+    ADJ_OPT_CORE_0_TEMP,
+    ADJ_OPT_CORE_1_TEMP,
+    ADJ_OPT_CORE_2_TEMP,
+    ADJ_OPT_CORE_3_TEMP,
+    ADJ_OPT_CORE_4_TEMP,
+    ADJ_OPT_CORE_5_TEMP,
+    ADJ_OPT_CORE_6_TEMP,
+    ADJ_OPT_CORE_7_TEMP,
+    ADJ_OPT_CORE_0_CLK,
+    ADJ_OPT_CORE_1_CLK,
+    ADJ_OPT_CORE_2_CLK,
+    ADJ_OPT_CORE_3_CLK,
+    ADJ_OPT_CORE_4_CLK,
+    ADJ_OPT_CORE_5_CLK,
+    ADJ_OPT_CORE_6_CLK,
+    ADJ_OPT_CORE_7_CLK,
+    ADJ_OPT_L3_CLK,
+    ADJ_OPT_L3_LOGIC,
+    ADJ_OPT_L3_VDDM,
+    ADJ_OPT_L3_TEMP,
+    ADJ_OPT_GFX_VOLT,
+    ADJ_OPT_GFX_TEMP,
+    ADJ_OPT_FCLK,
+    ADJ_OPT_MEM_CLK,
+    ADJ_OPT_SOC_VOLT,
+    ADJ_OPT_SOC_POWER,
+    ADJ_OPT_SOCKET_POWER,
 
-#ifdef _LIBRYZENADJ_INTERNAL
-#include  "ryzenadj_priv.h"
+    ADJ_OPT_COUNT
+} ADJ_OPT;
 
-#ifdef _WIN32
-#define EXP __declspec(dllexport)
-#define CALL __stdcall
-#else
-#define EXP __attribute__((visibility("default")))
-#define CALL
-#endif
+typedef enum {
+    ADJ_OK = 0,
+    ADJ_NOT_INITIALIZED,
+    ADJ_OUT_OF_MEMORY,
+    ADJ_INVALID_OPT,
+    ADJ_OPT_NOT_SUPPORTED,
+    ADJ_FAM_UNSUPPORTED,
+    ADJ_ERR_MEMORY_ACCESS,
+    ADJ_OPTLIST_FAIL,
+    ADJ_PCI_OBJ_FAIL,
+    ADJ_NB_FAIL,
+    ADJ_MP1_SMU_FAIL,
+    ADJ_PSMU_FAIL,
+    ADJ_SMU_UNSUPPORTED,
+    ADJ_SMU_REQ_FAILED
+} ADJ_ERROR;
 
-#else
-
-#ifdef _WIN32
-#define EXP __declspec(dllimport)
-#define CALL __stdcall
-#else
-#define EXP
-#define CALL
-#endif
-struct _ryzen_access;
-
-#endif
-
-#define ADJ_ERR_FAM_UNSUPPORTED      -1
-#define ADJ_ERR_SMU_TIMEOUT          -2
-#define ADJ_ERR_SMU_UNSUPPORTED      -3
-#define ADJ_ERR_SMU_REJECTED         -4
-#define ADJ_ERR_MEMORY_ACCESS        -5
-
-typedef struct _ryzen_access *ryzen_access;
-
-EXP ryzen_access CALL init_ryzenadj();
-
-EXP void CALL cleanup_ryzenadj(ryzen_access ry);
-
-EXP enum ryzen_family get_cpu_family(ryzen_access ry);
-EXP int get_bios_if_ver(ryzen_access ry);
-
-EXP int CALL init_table(ryzen_access ry);
-EXP uint32_t CALL get_table_ver(ryzen_access ry);
-EXP size_t CALL get_table_size(ryzen_access ry);
-EXP float* CALL get_table_values(ryzen_access ry);
-EXP int CALL refresh_table(ryzen_access ry);
-
-EXP int CALL set_stapm_limit(ryzen_access, uint32_t value);
-EXP int CALL set_fast_limit(ryzen_access, uint32_t value);
-EXP int CALL set_slow_limit(ryzen_access, uint32_t value);
-EXP int CALL set_slow_time(ryzen_access, uint32_t value);
-EXP int CALL set_stapm_time(ryzen_access, uint32_t value);
-EXP int CALL set_tctl_temp(ryzen_access, uint32_t value);
-EXP int CALL set_vrm_current(ryzen_access, uint32_t value);
-EXP int CALL set_vrmsoc_current(ryzen_access, uint32_t value);
-EXP int CALL set_vrmgfx_current(ryzen_access, uint32_t value);
-EXP int CALL set_vrmcvip_current(ryzen_access, uint32_t value);
-EXP int CALL set_vrmmax_current(ryzen_access, uint32_t value);
-EXP int CALL set_vrmgfxmax_current(ryzen_access, uint32_t value);
-EXP int CALL set_vrmsocmax_current(ryzen_access, uint32_t value);
-EXP int CALL set_psi0_current(ryzen_access, uint32_t value);
-EXP int CALL set_psi3cpu_current(ryzen_access, uint32_t value);
-EXP int CALL set_psi0soc_current(ryzen_access, uint32_t value);
-EXP int CALL set_psi3gfx_current(ryzen_access, uint32_t value);
-EXP int CALL set_max_gfxclk_freq(ryzen_access, uint32_t value);
-EXP int CALL set_min_gfxclk_freq(ryzen_access, uint32_t value);
-EXP int CALL set_max_socclk_freq(ryzen_access, uint32_t value);
-EXP int CALL set_min_socclk_freq(ryzen_access, uint32_t value);
-EXP int CALL set_max_fclk_freq(ryzen_access, uint32_t value);
-EXP int CALL set_min_fclk_freq(ryzen_access, uint32_t value);
-EXP int CALL set_max_vcn(ryzen_access, uint32_t value);
-EXP int CALL set_min_vcn(ryzen_access, uint32_t value);
-EXP int CALL set_max_lclk(ryzen_access, uint32_t value);
-EXP int CALL set_min_lclk(ryzen_access, uint32_t value);
-EXP int CALL set_prochot_deassertion_ramp(ryzen_access ry, uint32_t value);
-EXP int CALL set_apu_skin_temp_limit(ryzen_access, uint32_t value);
-EXP int CALL set_dgpu_skin_temp_limit(ryzen_access, uint32_t value);
-EXP int CALL set_apu_slow_limit(ryzen_access, uint32_t value);
-EXP int CALL set_skin_temp_power_limit(ryzen_access ry, uint32_t value);
-EXP int CALL set_gfx_clk(ryzen_access ry, uint32_t value);
-EXP int CALL set_oc_clk(ryzen_access ry, uint32_t value);
-EXP int CALL set_per_core_oc_clk(ryzen_access ry, uint32_t value);
-EXP int CALL set_oc_volt(ryzen_access ry, uint32_t value);
-EXP int CALL set_disable_oc(ryzen_access ry);
-EXP int CALL set_enable_oc(ryzen_access ry);
-EXP int CALL set_power_saving(ryzen_access ry);
-EXP int CALL set_max_performance(ryzen_access ry);
-EXP int CALL set_coall(ryzen_access ry, uint32_t value);
-EXP int CALL set_coper(ryzen_access ry, uint32_t value);
-EXP int CALL set_cogfx(ryzen_access ry, uint32_t value);
-
-EXP float CALL get_stapm_limit(ryzen_access ry);
-EXP float CALL get_stapm_value(ryzen_access ry);
-EXP float CALL get_fast_limit(ryzen_access ry);
-EXP float CALL get_fast_value(ryzen_access ry);
-EXP float CALL get_slow_limit(ryzen_access ry);
-EXP float CALL get_slow_value(ryzen_access ry);
-EXP float CALL get_apu_slow_limit(ryzen_access ry);
-EXP float CALL get_apu_slow_value(ryzen_access ry);
-EXP float CALL get_vrm_current(ryzen_access ry);
-EXP float CALL get_vrm_current_value(ryzen_access ry);
-EXP float CALL get_vrmsoc_current(ryzen_access ry);
-EXP float CALL get_vrmsoc_current_value(ryzen_access ry);
-EXP float CALL get_vrmmax_current(ryzen_access ry);
-EXP float CALL get_vrmmax_current_value(ryzen_access ry);
-EXP float CALL get_vrmsocmax_current(ryzen_access ry);
-EXP float CALL get_vrmsocmax_current_value(ryzen_access ry);
-EXP float CALL get_tctl_temp(ryzen_access ry);
-EXP float CALL get_tctl_temp_value(ryzen_access ry);
-EXP float CALL get_apu_skin_temp_limit(ryzen_access ry);
-EXP float CALL get_apu_skin_temp_value(ryzen_access ry);
-EXP float CALL get_dgpu_skin_temp_limit(ryzen_access ry);
-EXP float CALL get_dgpu_skin_temp_value(ryzen_access ry);
-EXP float CALL get_psi0_current(ryzen_access ry);
-EXP float CALL get_psi0soc_current(ryzen_access ry);
-EXP float CALL get_stapm_time(ryzen_access ry);
-EXP float CALL get_slow_time(ryzen_access ry);
-EXP float CALL get_cclk_setpoint(ryzen_access ry);
-EXP float CALL get_cclk_busy_value(ryzen_access ry);
-
-EXP float CALL get_core_clk(ryzen_access ry, uint32_t value);
-EXP float CALL get_core_volt(ryzen_access ry, uint32_t value);
-EXP float CALL get_core_power(ryzen_access ry, uint32_t value);
-EXP float CALL get_core_temp(ryzen_access ry, uint32_t value);
-
-EXP float CALL get_l3_clk(ryzen_access ry);
-EXP float CALL get_l3_logic(ryzen_access ry);
-EXP float CALL get_l3_vddm(ryzen_access ry);
-EXP float CALL get_l3_temp(ryzen_access ry);
-
-EXP float CALL get_gfx_clk(ryzen_access ry);
-EXP float CALL get_gfx_temp(ryzen_access ry);
-EXP float CALL get_gfx_volt(ryzen_access ry);
-
-EXP float CALL get_mem_clk(ryzen_access ry);
-EXP float CALL get_fclk(ryzen_access ry);
-
-EXP float CALL get_soc_power(ryzen_access ry);
-EXP float CALL get_soc_volt(ryzen_access ry);
-
-EXP float CALL get_socket_power(ryzen_access ry);
+EXP ADJ_ERROR CALL ryzenadj_init();
+EXP void CALL ryzenadj_cleanup();
+EXP ADJ_ERROR CALL ryzenadj_refresh_table();
+EXP ADJ_ERROR CALL ryzenadj_can_write(ADJ_OPT opt);
+EXP ADJ_ERROR CALL ryzenadj_can_read(ADJ_OPT opt);
+EXP ADJ_ERROR CALL ryzenadj_can_read_value(ADJ_OPT opt);
+EXP ADJ_ERROR CALL ryzenadj_set(ADJ_OPT opt, uint32_t value);
+EXP float CALL ryzenadj_get(ADJ_OPT opt, ADJ_ERROR *error);
+EXP float CALL ryzenadj_get_value(ADJ_OPT opt, ADJ_ERROR *error);
+EXP RYZEN_FAMILY CALL ryzenadj_get_cpu_family();
+EXP uint32_t CALL ryzenadj_get_bios_if_ver();
+EXP uintptr_t CALL ryzenadj_get_table_addr();
+EXP uint32_t CALL ryzenadj_get_table_ver();
+EXP size_t CALL ryzenadj_get_table_size();
+EXP float * CALL ryzenadj_get_table_values();
+EXP uint32_t CALL ryzenadj_get_mp1_smu_last_error();
+EXP uint32_t CALL ryzenadj_get_psmu_last_error();
+EXP char * CALL ryzenadj_error_str(ADJ_ERROR error);
 
 #ifdef __cplusplus
 }
-#endif
 #endif
