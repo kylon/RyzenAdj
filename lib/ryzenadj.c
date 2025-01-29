@@ -6,6 +6,7 @@
 #include <intrin.h>
 #else
 #include <cpuid.h>
+#include <unistd.h>
 #endif
 #include <string.h>
 #include <stdlib.h>
@@ -16,7 +17,6 @@
 #include "ryzen_opts.h"
 
 #ifndef _WIN32
-#include <unistd.h>
 #define Sleep(x) usleep((x) * 1000)
 #endif
 
@@ -346,7 +346,7 @@ static ADJ_ERROR init_table() {
     if (ry->table_values == NULL)
         return ADJ_OUT_OF_MEMORY;
 
-    ret = refresh_table(ry);
+    ret = refresh_table();
     if (ret != ADJ_OK)
         return ret;
 
@@ -359,7 +359,7 @@ static ADJ_ERROR init_table() {
         DBG("empty table detected, try again\n");
         Sleep(10);
 
-        return refresh_table(ry);
+        return refresh_table();
     }
 
     return ADJ_OK;
