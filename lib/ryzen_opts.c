@@ -346,6 +346,26 @@ static void setStrixpointOpts(ryzen_adj_opt_t *optList) {
     optList[ADJ_OPT_STAPM_LIMIT].opt_psmu = 0x31;
 }
 
+static void setStrixhaloOpts(ryzen_adj_opt_t *optList) {
+	optList[ADJ_OPT_CCLK_BUSY].opt = 0x11;
+	optList[ADJ_OPT_CCLK_SETPOINT].opt = 0x12;
+	optList[ADJ_OPT_STAPM_LIMIT].opt = 0x14;
+	optList[ADJ_OPT_FAST_LIMIT].opt = 0x15;
+	optList[ADJ_OPT_SLOW_LIMIT].opt = 0x16;
+	optList[ADJ_OPT_SLOW_TIME].opt = 0x17;
+	optList[ADJ_OPT_STAPM_TIME].opt = 0x18;
+	optList[ADJ_OPT_TCTL_TEMP].opt = 0x19;
+	optList[ADJ_OPT_VRM_CURRENT].opt = 0x1a;
+	optList[ADJ_OPT_VRMSOC_CURRENT].opt = 0x1b;
+	optList[ADJ_OPT_VRMMAX_CURRENT].opt = 0x1c;
+	optList[ADJ_OPT_VRMSOCMAX_CURRENT].opt = 0x1d;
+	optList[ADJ_OPT_PROCHOT_DEASSERTION_RAMP].opt = 0x1f;
+	optList[ADJ_OPT_APU_SLOW_LIMIT].opt = 0x23;
+	optList[ADJ_OPT_SKIN_TEMP_POWER_LIMIT].opt = 0x4a;
+	optList[ADJ_OPT_COPER].opt = 0x4b;
+	optList[ADJ_OPT_COALL].opt = 0x4c;
+}
+
 static int get_apu_slow_limit_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
 		case 0x00370000:
@@ -365,6 +385,7 @@ static int get_apu_slow_limit_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x0064020c: // StrixHalo - looks correct from dumping table, defaults to 70W
 			return 0x18;
 		default:
 			break;
@@ -389,6 +410,7 @@ static int get_apu_slow_value_table_offset(const uint32_t table_ver) {
 		case 0x00450004:
 		case 0x00450005:
 		case 0x004C0006:
+		case 0x0064020c: // StrixHalo - untested!
 			return 0x1C;
 		default:
 			break;
@@ -669,6 +691,7 @@ static int get_tctl_temp_table_offset(const uint32_t table_ver) {
 		case 0x001E0005:
 		case 0x001E000A:
 		case 0x001E0101:
+		case 0x0064020c:
 			return 0x58; //use core1 because core0 is not reported on dual core cpus
 		case 0x00370000:
 		case 0x00370001:
@@ -703,6 +726,7 @@ static int get_tctl_temp_value_table_offset(const uint32_t table_ver) {
 		case 0x001E0005:
 		case 0x001E000A:
 		case 0x001E0101:
+		case 0x0064020c:
 			return 0x5C; //use core1 because core0 is not reported on dual core cpus
 		case 0x00370000:
 		case 0x00370001:
@@ -747,6 +771,7 @@ static int get_apu_skin_temp_limit_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x0064020c:
 			return 0x58;
 		default:
 			break;
@@ -773,6 +798,7 @@ static int get_apu_skin_temp_value_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x0064020c:
 			return 0x5C;
 		default:
 			break;
@@ -798,6 +824,7 @@ static int get_dgpu_skin_temp_limit_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x0064020c:
 			return 0x60;
 		default:
 			break;
@@ -823,6 +850,7 @@ static int get_dgpu_skin_temp_value_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x0064020c:
 			return 0x64;
 		default:
 			break;
@@ -1037,8 +1065,46 @@ static int get_slow_time_table_offset(const uint32_t table_ver) {
 	return -1;
 }
 
+static int is_core_available_in_table(const uint32_t table_ver, const int core) {
+	switch (table_ver) {
+		case 0x00370000:
+		case 0x00370001:
+		case 0x00370002:
+		case 0x00370003:
+		case 0x00370004:
+		case 0x00370005:
+		case 0x00400001:
+		case 0x00400004:
+		case 0x00400005: {
+			if (core > 7)
+				break;
+
+			return 1;
+		}
+		case 0x003F0000: { // Van Gogh
+			if (core > 3)
+				break;
+
+			return 1;
+		}
+		case 0x0064020c: { // Strix Halo
+			if (core > 15)
+				break;
+
+			return 1;
+		}
+		default:
+			break;
+	}
+
+	return 0;
+}
+
 static int get_core_power_table_offset(const uint32_t table_ver, const int core) {
 	int baseOffset;
+
+	if (is_core_available_in_table(table_ver, core) == 0)
+		return -1;
 
 	switch (table_ver) {
 		case 0x00370000:
@@ -1051,12 +1117,8 @@ static int get_core_power_table_offset(const uint32_t table_ver, const int core)
 		case 0x00370005:
 			baseOffset = 0x31C;
 			break;
-		case 0x003F0000: { // Van Gogh
-			if (core > 3)
-				return -1;
-
+		case 0x003F0000: // Van Gogh
 			baseOffset = 0x238;
-		}
 			break;
 		case 0x00400001:
 			baseOffset = 0x304;
@@ -1064,6 +1126,9 @@ static int get_core_power_table_offset(const uint32_t table_ver, const int core)
 		case 0x00400004:
 		case 0x00400005:
 			baseOffset = 0x320;
+			break;
+		case 0x0064020c: // Strix Halo
+			baseOffset = 0xB90;
 			break;
 		default:
 			return -1;
@@ -1074,6 +1139,9 @@ static int get_core_power_table_offset(const uint32_t table_ver, const int core)
 
 static int get_core_volt_table_offset(const uint32_t table_ver, const int core) {
 	int baseOffset;
+
+	if (is_core_available_in_table(table_ver, core) == 0)
+		return -1;
 
 	switch (table_ver) {
 		case 0x00370000:
@@ -1086,16 +1154,15 @@ static int get_core_volt_table_offset(const uint32_t table_ver, const int core) 
 		case 0x00370005:
 			baseOffset = 0x33C;
 			break;
-		case 0x003F0000: { // Van Gogh
-			if (core > 3)
-				return -1;
-
+		case 0x003F0000: // Van Gogh
 			baseOffset = 0x248;
-		}
 			break;
 		case 0x00400004:
 		case 0x00400005:
 			baseOffset = 0x340;
+			break;
+		case 0x0064020c: // Strix Halo
+			baseOffset = 0xBD0;
 			break;
 		default:
 			return -1;
@@ -1106,6 +1173,9 @@ static int get_core_volt_table_offset(const uint32_t table_ver, const int core) 
 
 static int get_core_temp_table_offset(const uint32_t table_ver, const int core) {
 	int baseOffset;
+
+	if (is_core_available_in_table(table_ver, core) == 0)
+		return -1;
 
 	switch (table_ver) {
 		case 0x00370000:
@@ -1118,16 +1188,15 @@ static int get_core_temp_table_offset(const uint32_t table_ver, const int core) 
 		case 0x00370005:
 			baseOffset = 0x35C;
 			break;
-		case 0x003F0000: { // Van Gogh
-			if (core > 3)
-				return -1;
-
+		case 0x003F0000: // Van Gogh
 			baseOffset = 0x258;
-		}
 			break;
 		case 0x00400004:
 		case 0x00400005:
 			baseOffset = 0x360;
+			break;
+		case 0x0064020c: // Strix Halo
+			baseOffset = 0xC10;
 			break;
 		default:
 			return -1;
@@ -1138,6 +1207,9 @@ static int get_core_temp_table_offset(const uint32_t table_ver, const int core) 
 
 static int get_core_clk_table_offset(const uint32_t table_ver, const int core) {
 	int baseOffset;
+
+	if (is_core_available_in_table(table_ver, core) == 0)
+		return -1;
 
 	switch (table_ver) {
 		case 0x00370000:
@@ -1150,16 +1222,15 @@ static int get_core_clk_table_offset(const uint32_t table_ver, const int core) {
 		case 0x00370005:
 			baseOffset = 0x3BC;
 			break;
-		case 0x003F0000: { // Van Gogh
-			if (core > 3)
-				return -1;
-
+		case 0x003F0000: // Van Gogh
 			baseOffset = 0x288;
-		}
 			break;
 		case 0x00400004:
 		case 0x00400005:
 			baseOffset = 0x3c0;
+			break;
+		case 0x0064020c:
+			baseOffset = 0xc50;
 			break;
 		default:
 			return -1;
@@ -1277,6 +1348,8 @@ static int get_gfx_clk_table_offset(const uint32_t table_ver) {
 			return 0x648;
 		case 0x003F0000: //Van Gogh
 			return 0x388;
+		case 0x0064020c: // Strix Halo
+			return 0x558;
 		default:
 			break;
 	}
@@ -1305,6 +1378,8 @@ static int get_gfx_volt_table_offset(const uint32_t table_ver) {
 			return 0x63C;
 		case 0x003F0000: //Van Gogh
 			return 0x37C;
+		case 0x0064020c: // Strix Halo
+			return 0x54C;
 		default:
 			break;
 	}
@@ -1333,6 +1408,8 @@ static int get_gfx_temp_table_offset(const uint32_t table_ver) {
 			return 0x640;
 		case 0x003F0000: //Van Gogh
 			return 0x380;
+		case 0x0064020c: // Strix Halo
+			return 0x550;
 		default:
 			break;
 	}
@@ -1467,18 +1544,19 @@ ryzen_adj_opt_t *adj_init_opt_list(const RYZEN_FAMILY family) {
     init_opts(optList);
 
     switch (family) {
-        case FAM_RAVEN:         setRavenOpts(optList); break;
-        case FAM_PICASSO:       setPicassoOpts(optList); break;
-        case FAM_DALI:          setDaliOpts(optList); break;
-        case FAM_RENOIR:        setRenoirOpts(optList); break;
-        case FAM_LUCIENNE:      setLucienneOpts(optList); break;
-        case FAM_CEZANNE:       setCezanneOpts(optList); break;
-        case FAM_VANGOGH:       setVangoghOpts(optList); break;
-        case FAM_REMBRANDT:     setRembrandtOpts(optList); break;
-        case FAM_MENDOCINO:     setMendocinoOpts(optList); break;
-        case FAM_PHOENIX:       setPhoenixOpts(optList); break;
-        case FAM_HAWKPOINT:     setHawkpointOpts(optList); break;
-        case FAM_STRIXPOINT:    setStrixpointOpts(optList); break;
+		case FAM_RAVEN:         setRavenOpts(optList); break;
+		case FAM_PICASSO:       setPicassoOpts(optList); break;
+		case FAM_DALI:          setDaliOpts(optList); break;
+		case FAM_RENOIR:        setRenoirOpts(optList); break;
+		case FAM_LUCIENNE:      setLucienneOpts(optList); break;
+		case FAM_CEZANNE:       setCezanneOpts(optList); break;
+		case FAM_VANGOGH:       setVangoghOpts(optList); break;
+		case FAM_REMBRANDT:     setRembrandtOpts(optList); break;
+		case FAM_MENDOCINO:     setMendocinoOpts(optList); break;
+		case FAM_PHOENIX:       setPhoenixOpts(optList); break;
+		case FAM_HAWKPOINT:     setHawkpointOpts(optList); break;
+		case FAM_STRIXPOINT:    setStrixpointOpts(optList); break;
+		case FAM_STRIXHALO:     setStrixhaloOpts(optList); break;
         default: break;
     }
 
@@ -1524,6 +1602,14 @@ void adj_init_pm_table_offsets(ryzen_adj_opt_t *optList, const uint32_t table_ve
 	optList[ADJ_OPT_CORE_5_POWER].pm_table_opt_offt = get_core_power_table_offset(table_ver, 5);
 	optList[ADJ_OPT_CORE_6_POWER].pm_table_opt_offt = get_core_power_table_offset(table_ver, 6);
 	optList[ADJ_OPT_CORE_7_POWER].pm_table_opt_offt = get_core_power_table_offset(table_ver, 7);
+	optList[ADJ_OPT_CORE_8_POWER].pm_table_opt_offt = get_core_power_table_offset(table_ver, 8);
+	optList[ADJ_OPT_CORE_9_POWER].pm_table_opt_offt = get_core_power_table_offset(table_ver, 9);
+	optList[ADJ_OPT_CORE_10_POWER].pm_table_opt_offt = get_core_power_table_offset(table_ver, 10);
+	optList[ADJ_OPT_CORE_11_POWER].pm_table_opt_offt = get_core_power_table_offset(table_ver, 11);
+	optList[ADJ_OPT_CORE_12_POWER].pm_table_opt_offt = get_core_power_table_offset(table_ver, 12);
+	optList[ADJ_OPT_CORE_13_POWER].pm_table_opt_offt = get_core_power_table_offset(table_ver, 13);
+	optList[ADJ_OPT_CORE_14_POWER].pm_table_opt_offt = get_core_power_table_offset(table_ver, 14);
+	optList[ADJ_OPT_CORE_15_POWER].pm_table_opt_offt = get_core_power_table_offset(table_ver, 15);
 	optList[ADJ_OPT_CORE_0_VOLT].pm_table_opt_offt = get_core_volt_table_offset(table_ver, 0);
 	optList[ADJ_OPT_CORE_1_VOLT].pm_table_opt_offt = get_core_volt_table_offset(table_ver, 1);
 	optList[ADJ_OPT_CORE_2_VOLT].pm_table_opt_offt = get_core_volt_table_offset(table_ver, 2);
@@ -1532,6 +1618,14 @@ void adj_init_pm_table_offsets(ryzen_adj_opt_t *optList, const uint32_t table_ve
 	optList[ADJ_OPT_CORE_5_VOLT].pm_table_opt_offt = get_core_volt_table_offset(table_ver, 5);
 	optList[ADJ_OPT_CORE_6_VOLT].pm_table_opt_offt = get_core_volt_table_offset(table_ver, 6);
 	optList[ADJ_OPT_CORE_7_VOLT].pm_table_opt_offt = get_core_volt_table_offset(table_ver, 7);
+	optList[ADJ_OPT_CORE_8_VOLT].pm_table_opt_offt = get_core_volt_table_offset(table_ver, 8);
+	optList[ADJ_OPT_CORE_9_VOLT].pm_table_opt_offt = get_core_volt_table_offset(table_ver, 9);
+	optList[ADJ_OPT_CORE_10_VOLT].pm_table_opt_offt = get_core_volt_table_offset(table_ver, 10);
+	optList[ADJ_OPT_CORE_11_VOLT].pm_table_opt_offt = get_core_volt_table_offset(table_ver, 11);
+	optList[ADJ_OPT_CORE_12_VOLT].pm_table_opt_offt = get_core_volt_table_offset(table_ver, 12);
+	optList[ADJ_OPT_CORE_13_VOLT].pm_table_opt_offt = get_core_volt_table_offset(table_ver, 13);
+	optList[ADJ_OPT_CORE_14_VOLT].pm_table_opt_offt = get_core_volt_table_offset(table_ver, 14);
+	optList[ADJ_OPT_CORE_15_VOLT].pm_table_opt_offt = get_core_volt_table_offset(table_ver, 15);
 	optList[ADJ_OPT_CORE_0_TEMP].pm_table_opt_offt = get_core_temp_table_offset(table_ver, 0);
 	optList[ADJ_OPT_CORE_1_TEMP].pm_table_opt_offt = get_core_temp_table_offset(table_ver, 1);
 	optList[ADJ_OPT_CORE_2_TEMP].pm_table_opt_offt = get_core_temp_table_offset(table_ver, 2);
@@ -1540,6 +1634,14 @@ void adj_init_pm_table_offsets(ryzen_adj_opt_t *optList, const uint32_t table_ve
 	optList[ADJ_OPT_CORE_5_TEMP].pm_table_opt_offt = get_core_temp_table_offset(table_ver, 5);
 	optList[ADJ_OPT_CORE_6_TEMP].pm_table_opt_offt = get_core_temp_table_offset(table_ver, 6);
 	optList[ADJ_OPT_CORE_7_TEMP].pm_table_opt_offt = get_core_temp_table_offset(table_ver, 7);
+	optList[ADJ_OPT_CORE_8_TEMP].pm_table_opt_offt = get_core_temp_table_offset(table_ver, 8);
+	optList[ADJ_OPT_CORE_9_TEMP].pm_table_opt_offt = get_core_temp_table_offset(table_ver, 9);
+	optList[ADJ_OPT_CORE_10_TEMP].pm_table_opt_offt = get_core_temp_table_offset(table_ver, 10);
+	optList[ADJ_OPT_CORE_11_TEMP].pm_table_opt_offt = get_core_temp_table_offset(table_ver, 11);
+	optList[ADJ_OPT_CORE_12_TEMP].pm_table_opt_offt = get_core_temp_table_offset(table_ver, 12);
+	optList[ADJ_OPT_CORE_13_TEMP].pm_table_opt_offt = get_core_temp_table_offset(table_ver, 13);
+	optList[ADJ_OPT_CORE_14_TEMP].pm_table_opt_offt = get_core_temp_table_offset(table_ver, 14);
+	optList[ADJ_OPT_CORE_15_TEMP].pm_table_opt_offt = get_core_temp_table_offset(table_ver, 15);
 	optList[ADJ_OPT_CORE_0_CLK].pm_table_opt_offt = get_core_clk_table_offset(table_ver, 0);
 	optList[ADJ_OPT_CORE_1_CLK].pm_table_opt_offt = get_core_clk_table_offset(table_ver, 1);
 	optList[ADJ_OPT_CORE_2_CLK].pm_table_opt_offt = get_core_clk_table_offset(table_ver, 2);
@@ -1548,6 +1650,14 @@ void adj_init_pm_table_offsets(ryzen_adj_opt_t *optList, const uint32_t table_ve
 	optList[ADJ_OPT_CORE_5_CLK].pm_table_opt_offt = get_core_clk_table_offset(table_ver, 5);
 	optList[ADJ_OPT_CORE_6_CLK].pm_table_opt_offt = get_core_clk_table_offset(table_ver, 6);
 	optList[ADJ_OPT_CORE_7_CLK].pm_table_opt_offt = get_core_clk_table_offset(table_ver, 7);
+	optList[ADJ_OPT_CORE_8_CLK].pm_table_opt_offt = get_core_clk_table_offset(table_ver, 8);
+	optList[ADJ_OPT_CORE_9_CLK].pm_table_opt_offt = get_core_clk_table_offset(table_ver, 9);
+	optList[ADJ_OPT_CORE_10_CLK].pm_table_opt_offt = get_core_clk_table_offset(table_ver, 10);
+	optList[ADJ_OPT_CORE_11_CLK].pm_table_opt_offt = get_core_clk_table_offset(table_ver, 11);
+	optList[ADJ_OPT_CORE_12_CLK].pm_table_opt_offt = get_core_clk_table_offset(table_ver, 12);
+	optList[ADJ_OPT_CORE_13_CLK].pm_table_opt_offt = get_core_clk_table_offset(table_ver, 13);
+	optList[ADJ_OPT_CORE_14_CLK].pm_table_opt_offt = get_core_clk_table_offset(table_ver, 14);
+	optList[ADJ_OPT_CORE_15_CLK].pm_table_opt_offt = get_core_clk_table_offset(table_ver, 15);
 	optList[ADJ_OPT_L3_CLK].pm_table_opt_offt = get_l3_clk_table_offset(table_ver);
 	optList[ADJ_OPT_L3_LOGIC].pm_table_opt_offt = get_l3_logic_table_offset(table_ver);
 	optList[ADJ_OPT_L3_VDDM].pm_table_opt_offt = get_l3_vddm_table_offset(table_ver);

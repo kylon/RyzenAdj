@@ -104,6 +104,7 @@ static RYZEN_FAMILY cpuid_load_family() {
             switch (model) {
                 case 32:
                 case 36: return FAM_STRIXPOINT;
+                case 112: return FAM_STRIXHALO;
                 default: break;
             }
         }
@@ -134,6 +135,7 @@ static ADJ_ERROR request_table_ver_and_size() {
         case FAM_PHOENIX:
         case FAM_HAWKPOINT:
         case FAM_STRIXPOINT:
+        case FAM_STRIXHALO:
             get_table_ver_msg = 0x6;
             break;
         default:
@@ -174,9 +176,10 @@ static ADJ_ERROR request_table_ver_and_size() {
         case 0x450004:
         case 0x450005: ry->table_size = 0xA44; break;
         case 0x4C0006: ry->table_size = 0xAA0; break;
+        case 0x64020c: ry->table_size = 0xE50; break;
 
         // use a larger size then the largest known table to be able to test real table size of unknown tables
-        default: ry->table_size = 0xA00; break;
+        default: ry->table_size = 0x1000; break;
     }
 
     return ADJ_OK;
@@ -201,6 +204,7 @@ static ADJ_ERROR request_table_addr() {
         case FAM_PHOENIX:
         case FAM_HAWKPOINT:
         case FAM_STRIXPOINT:
+        case FAM_STRIXHALO:
             get_table_addr_msg = 0x66;
             break;
         default:
@@ -217,6 +221,7 @@ static ADJ_ERROR request_table_addr() {
         case FAM_PHOENIX:
         case FAM_HAWKPOINT:
         case FAM_STRIXPOINT:
+        case FAM_STRIXHALO:
             ry->table_addr = (uint64_t) args.arg1 << 32 | args.arg0;
             break;
         default:
@@ -247,6 +252,7 @@ static ADJ_ERROR set_transfer_table_req_data() {
         case FAM_PHOENIX:
         case FAM_HAWKPOINT:
         case FAM_STRIXPOINT:
+        case FAM_STRIXHALO:
             ry->transfer_table_req.msg = 0x65;
             break;
         default:
