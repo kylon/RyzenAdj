@@ -385,6 +385,7 @@ static int get_apu_slow_limit_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x004C0009:
 		case 0x0064020c: // StrixHalo - looks correct from dumping table, defaults to 70W
 			return 0x18;
 		default:
@@ -410,6 +411,7 @@ static int get_apu_slow_value_table_offset(const uint32_t table_ver) {
 		case 0x00450004:
 		case 0x00450005:
 		case 0x004C0006:
+		case 0x004C0009:
 		case 0x0064020c: // StrixHalo - untested!
 			return 0x1C;
 		default:
@@ -444,6 +446,7 @@ static int get_vrm_current_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x004C0009:
 			return 0x20;
 		default:
 			break;
@@ -477,6 +480,7 @@ static int get_vrm_current_value_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x004C0009:
 			return 0x24;
 		default:
 			break;
@@ -510,6 +514,7 @@ static int get_vrmsoc_current_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x004C0009:
 			return 0x28;
 		default:
 			break;
@@ -543,6 +548,7 @@ static int get_vrmsoc_current_value_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x004C0009:
 			return 0x2C;
 		default:
 			break;
@@ -576,6 +582,7 @@ static int get_vrmmax_current_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x004C0009:
 			return 0x30;
 		default:
 			break;
@@ -609,6 +616,7 @@ static int get_vrmmax_current_value_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x004C0009:
 			return 0x34;
 		default:
 			break;
@@ -642,6 +650,7 @@ static int get_vrmsocmax_current_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x004C0009:
 			return 0x38;
 		default:
 			break;
@@ -675,6 +684,7 @@ static int get_vrmsocmax_current_value_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x004C0009:
 			return 0x3C;
 		default:
 			break;
@@ -710,6 +720,7 @@ static int get_tctl_temp_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x004C0009:
 			return 0x40;
 		default:
 			break;
@@ -745,6 +756,7 @@ static int get_tctl_temp_value_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x004C0009:
 			return 0x44;
 		default:
 			break;
@@ -771,6 +783,7 @@ static int get_apu_skin_temp_limit_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x004C0009:
 		case 0x0064020c:
 			return 0x58;
 		default:
@@ -798,6 +811,7 @@ static int get_apu_skin_temp_value_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x004C0009:
 		case 0x0064020c:
 			return 0x5C;
 		default:
@@ -824,6 +838,7 @@ static int get_dgpu_skin_temp_limit_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x004C0009:
 		case 0x0064020c:
 			return 0x60;
 		default:
@@ -850,6 +865,7 @@ static int get_dgpu_skin_temp_value_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x004C0009:
 		case 0x0064020c:
 			return 0x64;
 		default:
@@ -883,6 +899,7 @@ static int get_psi0_current_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x004C0009:
 			return 0x78;
 		default:
 			break;
@@ -915,6 +932,7 @@ static int get_psi0soc_current_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x004C0009:
 			return 0x80;
 		default:
 			break;
@@ -1016,6 +1034,7 @@ static int get_stapm_time_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x004C0009:
 			return 0x918;
 		default:
 			break;
@@ -1057,6 +1076,7 @@ static int get_slow_time_table_offset(const uint32_t table_ver) {
 		case 0x004C0006:
 		case 0x004C0007:
 		case 0x004C0008:
+		case 0x004C0009:
 			return 0x91C;
 		default:
 			break;
