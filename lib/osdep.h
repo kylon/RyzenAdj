@@ -21,26 +21,22 @@
 #define DBG(...)
 #endif
 
+typedef struct {
 #ifdef _WIN32
-typedef uint32_t *nb_t;
-typedef bool *pci_obj_t;
-typedef HINSTANCE *mem_obj_t;
+    uint32_t pci_address;
+    HINSTANCE inpoutDll;
 #else
-typedef struct pci_dev *nb_t;
-typedef struct pci_access *pci_obj_t;
-typedef bool *mem_obj_t;
+    struct pci_access *pci_acc;
+    struct pci_dev *pci_dev;
 #endif
+} os_access_obj_t;
 
-pci_obj_t init_pci_obj();
-mem_obj_t init_mem_obj(uintptr_t physAddr);
-nb_t get_nb(pci_obj_t obj);
-int copy_pm_table(void *buffer, size_t size);
+os_access_obj_t *init_os_access_obj();
+int init_mem_obj(os_access_obj_t *os_access, uintptr_t physAddr);
+int copy_pm_table(const os_access_obj_t *obj, void *buffer, size_t size);
 int compare_pm_table(const void *buffer, size_t size);
+void free_os_access_obj(os_access_obj_t *obj);
 
-void free_pci_obj(pci_obj_t obj);
-void free_nb(nb_t nb);
-void free_mem_obj(mem_obj_t obj);
-
-uint32_t smn_reg_read(nb_t nb, uint32_t addr);
-void smn_reg_write(nb_t nb, uint32_t addr, uint32_t data);
+uint32_t smn_reg_read(const os_access_obj_t *obj, uint32_t addr);
+void smn_reg_write(const os_access_obj_t *obj, uint32_t addr, uint32_t data);
 bool is_using_smu_driver();

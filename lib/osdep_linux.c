@@ -10,52 +10,73 @@
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
+#include <stdlib.h>
 
 #include "osdep.h"
 
-bool mem_obj_obj = false;
 int pm_table_fd = 0;
 void *phy_map = MAP_FAILED;
 
-pci_obj_t init_pci_obj() {
-	pci_obj_t obj = pci_alloc();
+os_access_obj_t *init_os_access_obj() {
+	os_access_obj_t *obj = malloc(sizeof(os_access_obj_t));
 
-	pci_init(obj);
+	if (obj == NULL)
+		return NULL;
+
+	memset(obj, 0, sizeof(os_access_obj_t));
+
+	obj->pci_acc = pci_alloc();
+	if (!obj->pci_acc) {
+		fprintf(stderr, "pci_alloc failed\n");
+		return NULL;
+	}
+
+	pci_init(obj->pci_acc);
+
+	obj->pci_dev = pci_get_dev(obj->pci_acc, 0, 0, 0, 0);
+	if (!obj->pci_dev) {
+		fprintf(stderr, "Unable to get pci device\n");
+		return NULL;
+	}
+
+	pci_fill_info(obj->pci_dev, PCI_FILL_IDENT | PCI_FILL_BASES | PCI_FILL_CLASS);
 	return obj;
 }
 
-nb_t get_nb(pci_obj_t obj) {
-	nb_t nb = pci_get_dev(obj, 0, 0, 0, 0);
-
-	pci_fill_info(nb, PCI_FILL_IDENT | PCI_FILL_BASES | PCI_FILL_CLASS);
-	return nb;
-}
-
-void free_nb(nb_t nb) {
-	if (!nb)
+void free_os_access_obj(os_access_obj_t *obj) {
+	if (obj == NULL)
 		return;
 
-	pci_free_dev(nb);
+	if (obj->pci_dev)
+		pci_free_dev(obj->pci_dev);
+
+	if (obj->pci_acc)
+		pci_cleanup(obj->pci_acc);
+
+	if (phy_map != MAP_FAILED) {
+		munmap(phy_map, 0x1000);
+		phy_map = MAP_FAILED;
+	}
+
+	if (pm_table_fd > 0) {
+		close(pm_table_fd);
+		pm_table_fd = 0;
+	}
+
+	free(obj);
 }
 
-void free_pci_obj(pci_obj_t obj) {
-	if (!obj)
-		return;
-
-	pci_cleanup(obj);
+uint32_t smn_reg_read(const os_access_obj_t *obj, const uint32_t addr) {
+	pci_write_long(obj->pci_dev, NB_PCI_REG_ADDR_ADDR, addr & (~0x3));
+	return pci_read_long(obj->pci_dev, NB_PCI_REG_DATA_ADDR);
 }
 
-uint32_t smn_reg_read(nb_t nb, const uint32_t addr) {
-	pci_write_long(nb, NB_PCI_REG_ADDR_ADDR, addr & (~0x3));
-	return pci_read_long(nb, NB_PCI_REG_DATA_ADDR);
+void smn_reg_write(const os_access_obj_t *obj, const uint32_t addr, const uint32_t data) {
+	pci_write_long(obj->pci_dev, NB_PCI_REG_ADDR_ADDR, addr);
+	pci_write_long(obj->pci_dev, NB_PCI_REG_DATA_ADDR, data);
 }
 
-void smn_reg_write(nb_t nb, const uint32_t addr, const uint32_t data) {
-	pci_write_long(nb, NB_PCI_REG_ADDR_ADDR, addr);
-	pci_write_long(nb, NB_PCI_REG_DATA_ADDR, data);
-}
-
-mem_obj_t init_mem_obj(const uintptr_t physAddr) {
+int init_mem_obj([[maybe_unused]] os_access_obj_t *os_access, const uintptr_t physAddr) {
 	const int dev_mem_fd = open("/dev/mem", O_RDONLY);
 	const int dev_mem_errno = errno;
 	int mmap_errno;
@@ -85,31 +106,14 @@ mem_obj_t init_mem_obj(const uintptr_t physAddr) {
 				DBG("If you don't want to change your memory access policy, you need a kernel module for this task.\n"
 						"We do support usage of this kernel module https://gitlab.com/leogx9r/ryzen_smu\n");
 
-			return NULL;
+			return -1;
 		}
 	}
 
-	mem_obj_obj = true;
-
-	return &mem_obj_obj;
+	return 0;
 }
 
-void free_mem_obj(mem_obj_t obj) {
-	if (!mem_obj_obj)
-		return;
-
-	if (phy_map != MAP_FAILED)
-		munmap(phy_map, 0x1000);
-
-	if (pm_table_fd > 0)
-		close(pm_table_fd);
-
-	mem_obj_obj = false;
-	pm_table_fd = 0;
-	phy_map = MAP_FAILED;
-}
-
-int copy_pm_table(void *buffer, const size_t size) {
+int copy_pm_table([[maybe_unused]] const os_access_obj_t *obj, void *buffer, const size_t size) {
 	if (pm_table_fd > 0) {
 		lseek(pm_table_fd, 0, SEEK_SET);
 

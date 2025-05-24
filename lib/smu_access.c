@@ -31,22 +31,22 @@ static int smu_service_test(const smu_access_t *smu) {
 	uint32_t response = 0;
 
 	/* Clear the response */
-	smn_reg_write(smu->nb, smu->rep, 0);
+	smn_reg_write(smu->os_access, smu->rep, 0);
 
 	/* Test message with unique argument */
-	smn_reg_write(smu->nb, smu->arg_base, 0x47);
+	smn_reg_write(smu->os_access, smu->arg_base, 0x47);
 
-	if (smn_reg_read(smu->nb, smu->arg_base) != 0x47) {
+	if (smn_reg_read(smu->os_access, smu->arg_base) != 0x47) {
 		DBG("PCI Bus is not writeable, check secure boot\n");
 		return 0;
 	}
 
 	/* Send message ID */
-	smn_reg_write(smu->nb, smu->msg, SMU_TEST_MSG);
+	smn_reg_write(smu->os_access, smu->msg, SMU_TEST_MSG);
 
 	/* Wait until reponse changed */
 	while (response == 0)
-		response = smn_reg_read(smu->nb, smu->rep);
+		response = smn_reg_read(smu->os_access, smu->rep);
 
 	return response == REP_MSG_OK;
 }
@@ -83,10 +83,13 @@ static uint32_t c2pmsg_argX_addr(const uint32_t y, const uint32_t x) {
 	return (y + 4 * x);
 }
 
-smu_access_t *get_smu(nb_t nb, const SMU_TYPE type, const RYZEN_FAMILY family) {
+smu_access_t *get_smu(os_access_obj_t *obj, const SMU_TYPE type, const RYZEN_FAMILY family) {
 	smu_access_t *smu = malloc(sizeof(smu_access_t));
 
-	smu->nb = nb;
+	if (smu == NULL)
+		return NULL;
+
+	smu->os_access = obj;
 	smu->last_error = 0;
 
 	/* Fill SMU information */
@@ -124,30 +127,30 @@ ADJ_ERROR smu_service_req(smu_access_t *smu, const uint32_t id , smu_service_arg
 		args->arg0, args->arg1, args->arg2, args->arg3, args->arg4, args->arg5);
 
 	/* Clear the response */
-	smn_reg_write(smu->nb, smu->rep, 0x0);
+	smn_reg_write(smu->os_access, smu->rep, 0x0);
 
 	/* Pass arguments */
-	smn_reg_write(smu->nb, c2pmsg_argX_addr(smu->arg_base, 0), args->arg0);
-	smn_reg_write(smu->nb, c2pmsg_argX_addr(smu->arg_base, 1), args->arg1);
-	smn_reg_write(smu->nb, c2pmsg_argX_addr(smu->arg_base, 2), args->arg2);
-	smn_reg_write(smu->nb, c2pmsg_argX_addr(smu->arg_base, 3), args->arg3);
-	smn_reg_write(smu->nb, c2pmsg_argX_addr(smu->arg_base, 4), args->arg4);
-	smn_reg_write(smu->nb, c2pmsg_argX_addr(smu->arg_base, 5), args->arg5);
+	smn_reg_write(smu->os_access, c2pmsg_argX_addr(smu->arg_base, 0), args->arg0);
+	smn_reg_write(smu->os_access, c2pmsg_argX_addr(smu->arg_base, 1), args->arg1);
+	smn_reg_write(smu->os_access, c2pmsg_argX_addr(smu->arg_base, 2), args->arg2);
+	smn_reg_write(smu->os_access, c2pmsg_argX_addr(smu->arg_base, 3), args->arg3);
+	smn_reg_write(smu->os_access, c2pmsg_argX_addr(smu->arg_base, 4), args->arg4);
+	smn_reg_write(smu->os_access, c2pmsg_argX_addr(smu->arg_base, 5), args->arg5);
 
 	/* Send message ID */
-	smn_reg_write(smu->nb, smu->msg, id);
+	smn_reg_write(smu->os_access, smu->msg, id);
 
 	/* Wait until reponse changed */
 	while(response == 0x0)
-		response = smn_reg_read(smu->nb, smu->rep);
+		response = smn_reg_read(smu->os_access, smu->rep);
 
 	/* Read back arguments */
-	args->arg0 = smn_reg_read(smu->nb, c2pmsg_argX_addr(smu->arg_base, 0));
-	args->arg1 = smn_reg_read(smu->nb, c2pmsg_argX_addr(smu->arg_base, 1));
-	args->arg2 = smn_reg_read(smu->nb, c2pmsg_argX_addr(smu->arg_base, 2));
-	args->arg3 = smn_reg_read(smu->nb, c2pmsg_argX_addr(smu->arg_base, 3));
-	args->arg4 = smn_reg_read(smu->nb, c2pmsg_argX_addr(smu->arg_base, 4));
-	args->arg5 = smn_reg_read(smu->nb, c2pmsg_argX_addr(smu->arg_base, 5));
+	args->arg0 = smn_reg_read(smu->os_access, c2pmsg_argX_addr(smu->arg_base, 0));
+	args->arg1 = smn_reg_read(smu->os_access, c2pmsg_argX_addr(smu->arg_base, 1));
+	args->arg2 = smn_reg_read(smu->os_access, c2pmsg_argX_addr(smu->arg_base, 2));
+	args->arg3 = smn_reg_read(smu->os_access, c2pmsg_argX_addr(smu->arg_base, 3));
+	args->arg4 = smn_reg_read(smu->os_access, c2pmsg_argX_addr(smu->arg_base, 4));
+	args->arg5 = smn_reg_read(smu->os_access, c2pmsg_argX_addr(smu->arg_base, 5));
 
 	DBG("SMU_SERVICE REP: 0x%x, arg0: 0x%x, arg1:0x%x, arg2:0x%x, arg3:0x%x, arg4: 0x%x, arg5: 0x%x\n",  \
 		response, args->arg0, args->arg1, args->arg2, args->arg3, args->arg4, args->arg5);

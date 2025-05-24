@@ -20,7 +20,7 @@ typedef enum {
 } SMU_TYPE;
 
 typedef struct {
-    nb_t nb;
+    os_access_obj_t *os_access;
     uint32_t msg;
     uint32_t rep;
     uint32_t arg_base;
@@ -36,5 +36,5 @@ typedef struct {
     uint32_t arg5;
 } smu_service_args_t;
 
-smu_access_t *get_smu(nb_t nb, SMU_TYPE type, RYZEN_FAMILY family);
+smu_access_t *get_smu(os_access_obj_t *obj, SMU_TYPE type, RYZEN_FAMILY family);
 ADJ_ERROR smu_service_req(smu_access_t *smu, uint32_t id , smu_service_args_t *args);

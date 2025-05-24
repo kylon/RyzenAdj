@@ -26,9 +26,7 @@ typedef struct {
 } transfer_table_req_t;
 
 typedef struct {
-    nb_t nb;
-    pci_obj_t pci_obj;
-    mem_obj_t mem_obj;
+    os_access_obj_t *os_access;
     smu_access_t *mp1_smu;
     smu_access_t *psmu;
     RYZEN_FAMILY family;
@@ -310,7 +308,7 @@ static ADJ_ERROR refresh_table() {
         }
     }
 
-    if (copy_pm_table(ry->table_values, ry->table_size)) {
+    if (copy_pm_table(ry->os_access, ry->table_values, ry->table_size)) {
         DBG("%s failed\n", __func__);
         return ADJ_ERR_MEMORY_ACCESS;
     }
@@ -340,8 +338,7 @@ static ADJ_ERROR init_table() {
         return ret;
 
     // init memory object because it is prerequiremt to woring with physical memory address
-    ry->mem_obj = init_mem_obj(ry->table_addr);
-    if (!ry->mem_obj) {
+    if (init_mem_obj(ry->os_access, ry->table_addr) < 0) {
         DBG("Unable to get memory access\n");
         return ADJ_ERR_MEMORY_ACCESS;
     }
@@ -440,28 +437,20 @@ EXP ADJ_ERROR CALL ryzenadj_init() {
         return ADJ_OPTLIST_FAIL;
     }
 
-    ry->pci_obj = init_pci_obj();
-    if (!ry->pci_obj) {
-        DBG("Unable to get PCI Obj, check permission\n");
+    ry->os_access = init_os_access_obj();
+    if (!ry->os_access) {
         ryzenadj_cleanup();
-        return ADJ_PCI_OBJ_FAIL;
+        return ADJ_OS_ACCESS_OBJ_FAIL;
     }
 
-    ry->nb = get_nb(ry->pci_obj);
-    if (!ry->nb) {
-        DBG("Unable to get NB Obj\n");
-        ryzenadj_cleanup();
-        return ADJ_NB_FAIL;
-    }
-
-    ry->mp1_smu = get_smu(ry->nb, TYPE_MP1, ry->family);
+    ry->mp1_smu = get_smu(ry->os_access, TYPE_MP1, ry->family);
     if (!ry->mp1_smu) {
         DBG("Unable to get MP1 SMU Obj\n");
         ryzenadj_cleanup();
         return ADJ_MP1_SMU_FAIL;
     }
 
-    ry->psmu = get_smu(ry->nb, TYPE_PSMU, ry->family);
+    ry->psmu = get_smu(ry->os_access, TYPE_PSMU, ry->family);
     if (!ry->psmu) {
         DBG("Unable to get RSMU Obj\n");
         ryzenadj_cleanup();
@@ -478,9 +467,7 @@ EXP void CALL ryzenadj_cleanup() {
     free(ry->opt_list);
     free(ry->mp1_smu);
     free(ry->psmu);
-    free_nb(ry->nb);
-    free_pci_obj(ry->pci_obj);
-    free_mem_obj(ry->mem_obj);
+    free_os_access_obj(ry->os_access);
     free(ry->table_values);
     free(ry);
 
@@ -658,11 +645,8 @@ EXP char * CALL ryzenadj_error_str(const ADJ_ERROR error) {
         case ADJ_OPTLIST_FAIL:
             snprintf(buf, sizeof(buf), "RyzenAdj: failed to create options list");
             break;
-        case ADJ_PCI_OBJ_FAIL:
-            snprintf(buf, sizeof(buf), "RyzenAdj: unable to get PCI Obj, check permission");
-            break;
-        case ADJ_NB_FAIL:
-            snprintf(buf, sizeof(buf), "RyzenAdj: unable to get NB Obj");
+        case ADJ_OS_ACCESS_OBJ_FAIL:
+            snprintf(buf, sizeof(buf), "RyzenAdj: failed to initialize os_access Obj");
             break;
         case ADJ_MP1_SMU_FAIL:
             snprintf(buf, sizeof(buf), "RyzenAdj: unable to get MP1 SMU Obj");
