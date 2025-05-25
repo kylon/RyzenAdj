@@ -13,9 +13,6 @@
 
 #include "osdep_linux_mem.h"
 
-#define NB_PCI_REG_ADDR_ADDR			0xB8
-#define NB_PCI_REG_DATA_ADDR			0xBC
-
 void *phy_map = MAP_FAILED;
 
 os_access_obj_t *init_os_access_obj_mem() {

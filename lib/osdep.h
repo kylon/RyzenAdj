@@ -18,6 +18,9 @@
 #define DBG(...)
 #endif
 
+#define NB_PCI_REG_ADDR_ADDR			0xB8
+#define NB_PCI_REG_DATA_ADDR			0xBC
+
 typedef struct {
 #ifdef _WIN32
     uint32_t pci_address;

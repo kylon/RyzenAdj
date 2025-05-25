@@ -4,7 +4,7 @@
  */
 /* Access PCI Config Space - winring0 */
 extern "C" {
-#include "osdep.h"
+#include "../osdep.h"
 }
 #include <cstdlib>
 
@@ -40,7 +40,7 @@ os_access_obj_t *init_os_access_obj() {
             if (obj == NULL)
                 return NULL;
 
-	        memset(obj, 0, sizeof(os_access_obj_t));
+            memset(obj, 0, sizeof(os_access_obj_t));
             return obj;
         }
         case OLS_DLL_UNSUPPORTED_PLATFORM:
