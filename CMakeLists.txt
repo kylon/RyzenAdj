@@ -11,8 +11,6 @@ check_ipo_supported(RESULT has_ipo OUTPUT error)
 
 set(PROJECT_SOURCES
     lib/osdep.h
-    lib/osdep_linux_mem.h
-    lib/osdep_linux_smu_kernel_module.h
     lib/smu_access.h
     lib/smu_access.c
     lib/ryzen_opts.h
@@ -30,16 +28,18 @@ if (WIN32)
     set(LINK_LIBS WinRing0x64)
 
     list(APPEND PROJECT_SOURCES
-        lib/osdep_win32.cpp
+        lib/win32/osdep_win32.cpp
     )
 
 elseif (LINUX)
     set(LINK_LIBS pci)
 
     list(APPEND PROJECT_SOURCES
-        lib/osdep_linux.c
-        lib/osdep_linux_mem.c
-        lib/osdep_linux_smu_kernel_module.c
+        lib/linux/osdep_linux_mem.h
+        lib/linux/osdep_linux_mem.c
+        lib/linux/osdep_linux_smu_kernel_module.h
+        lib/linux/osdep_linux_smu_kernel_module.c
+        lib/linux/osdep_linux.c
     )
 
 else ()
