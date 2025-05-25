@@ -9,8 +9,6 @@ extern "C" {
 #include "OlsApi.h"
 #include "OlsDef.h"
 
-uint32_t nb_pci_address = 0x0;
-
 typedef BOOL (__stdcall *lpIsInpOutDriverOpen)(void);
 typedef PBYTE (__stdcall *lpMapPhysToLin)(uintptr_t pbPhysAddr, size_t dwPhysSize, HANDLE *pPhysicalMemoryHandle);
 typedef BOOL (__stdcall *lpUnmapPhysicalMemory)(HANDLE PhysicalMemoryHandle, uintptr_t pbLinAddr);
