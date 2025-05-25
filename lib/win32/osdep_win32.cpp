@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: LGPL
-/* Copyright (C) 2018-2019 Jiaxun Yang <jiaxun.yang@flygoat.com>
- * 2025 kylon - 0.20
- */
+/* Copyright (C) 2018-2019 Jiaxun Yang <jiaxun.yang@flygoat.com> */
 /* Access PCI Config Space - winring0 */
 extern "C" {
 #include "../osdep.h"

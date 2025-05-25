@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: LGPL
-/* Copyright (C) 2018-2019 Jiaxun Yang <jiaxun.yang@flygoat.com>
- * 2025 kylon - 0.20
- */
+/* Copyright (C) 2018-2019 Jiaxun Yang <jiaxun.yang@flygoat.com> */
 #ifdef _WIN32
 #include <intrin.h>
 #else
