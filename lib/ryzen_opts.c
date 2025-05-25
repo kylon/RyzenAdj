@@ -323,7 +323,7 @@ static void setHawkpointOpts(ryzen_adj_opt_t *optList) {
     optList[ADJ_OPT_COGFX].opt_psmu = 0xB7;
 }
 
-static void setKrackanOpts(ryzen_adj_opt_t *optList) {
+static void setKrackanpointOpts(ryzen_adj_opt_t *optList) {
 	optList[ADJ_OPT_CCLK_BUSY].opt = 0x11;
 	optList[ADJ_OPT_CCLK_SETPOINT].opt = 0x12;
 	optList[ADJ_OPT_STAPM_LIMIT].opt = 0x14;
@@ -1598,7 +1598,7 @@ ryzen_adj_opt_t *adj_init_opt_list(const RYZEN_FAMILY family) {
 		case FAM_MENDOCINO:     setMendocinoOpts(optList); break;
 		case FAM_PHOENIX:       setPhoenixOpts(optList); break;
 		case FAM_HAWKPOINT:     setHawkpointOpts(optList); break;
-		case FAM_KRACKAN:		setKrackanOpts(optList); break;
+		case FAM_KRACKANPOINT:	setKrackanpointOpts(optList); break;
 		case FAM_STRIXPOINT:    setStrixpointOpts(optList); break;
 		case FAM_STRIXHALO:     setStrixhaloOpts(optList); break;
         default: break;
