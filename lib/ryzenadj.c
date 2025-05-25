@@ -171,10 +171,15 @@ static ADJ_ERROR request_table_ver_and_size() {
         case 0x400003: ry->table_size = 0x94C; break;
         case 0x400004:
         case 0x400005: ry->table_size = 0x944; break;
-        case 0x450004:
-        case 0x450005: ry->table_size = 0xA44; break;
-        case 0x4C0006:
-        case 0x4C0009: ry->table_size = 0xAA0; break;
+        case 0x450004: ry->table_size = 0xAA4; break;
+        case 0x450005: ry->table_size = 0xAB0; break;
+        case 0x4C0003: ry->table_size = 0xB18; break;
+        case 0x4C0004: ry->table_size = 0xB1C; break;
+        case 0x4C0005: ry->table_size = 0xAF8; break;
+        case 0x4C0006: ry->table_size = 0xAFC; break;
+        case 0x4C0008: ry->table_size = 0xAF0; break;
+        case 0x4C0007:
+        case 0x4C0009: ry->table_size = 0xB00; break;
         case 0x64020c: ry->table_size = 0xE50; break;
 
         // use a larger size then the largest known table to be able to test real table size of unknown tables
