@@ -100,6 +100,7 @@ static RYZEN_FAMILY cpuid_load_family() {
             switch (model) {
                 case 32:
                 case 36: return FAM_STRIXPOINT;
+                case 96: return FAM_KRACKAN;
                 case 112: return FAM_STRIXHALO;
                 default: break;
             }
@@ -130,6 +131,7 @@ static ADJ_ERROR request_table_ver_and_size() {
         case FAM_REMBRANDT:
         case FAM_PHOENIX:
         case FAM_HAWKPOINT:
+        case FAM_KRACKAN:
         case FAM_STRIXPOINT:
         case FAM_STRIXHALO:
             get_table_ver_msg = 0x6;
@@ -200,6 +202,7 @@ static ADJ_ERROR request_table_addr() {
         case FAM_REMBRANDT:
         case FAM_PHOENIX:
         case FAM_HAWKPOINT:
+        case FAM_KRACKAN:
         case FAM_STRIXPOINT:
         case FAM_STRIXHALO:
             get_table_addr_msg = 0x66;
@@ -217,6 +220,7 @@ static ADJ_ERROR request_table_addr() {
         case FAM_REMBRANDT:
         case FAM_PHOENIX:
         case FAM_HAWKPOINT:
+        case FAM_KRACKAN:
         case FAM_STRIXPOINT:
         case FAM_STRIXHALO:
             ry->table_addr = (uint64_t) args.arg1 << 32 | args.arg0;
@@ -248,6 +252,7 @@ static ADJ_ERROR set_transfer_table_req_data() {
         case FAM_REMBRANDT:
         case FAM_PHOENIX:
         case FAM_HAWKPOINT:
+        case FAM_KRACKAN:
         case FAM_STRIXPOINT:
         case FAM_STRIXHALO:
             ry->transfer_table_req.msg = 0x65;

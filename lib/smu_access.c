@@ -61,6 +61,7 @@ static void init_type_mp1(smu_access_t *smu, const RYZEN_FAMILY family) {
 			smu->arg_base = MP1_C2PMSG_ARG_BASE_2;
 		}
 			break;
+		case FAM_KRACKAN:
 		case FAM_STRIXPOINT:
 		case FAM_STRIXHALO: {
 			smu->msg = MP1_C2PMSG_MESSAGE_ADDR_3;

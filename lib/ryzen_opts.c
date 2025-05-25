@@ -316,11 +316,32 @@ static void setHawkpointOpts(ryzen_adj_opt_t *optList) {
     optList[ADJ_OPT_DGPU_SKIN_TEMP_LIMIT].opt = 0x34;
     optList[ADJ_OPT_SKIN_TEMP_POWER_LIMIT].opt = 0x4a;
     optList[ADJ_OPT_COPER].opt = 0x4b;
-    optList[ADJ_OPT_COALL].opt = 0x4C;
+    optList[ADJ_OPT_COALL].opt = 0x4c;
     optList[ADJ_OPT_GFX_CLK].opt = 0x89;
 
     optList[ADJ_OPT_STAPM_LIMIT].opt_psmu = 0x31;
     optList[ADJ_OPT_COGFX].opt_psmu = 0xB7;
+}
+
+static void setKrackanOpts(ryzen_adj_opt_t *optList) {
+    optList[ADJ_OPT_CCLK_BUSY].opt = 0x11;
+    optList[ADJ_OPT_CCLK_SETPOINT].opt = 0x12;
+    optList[ADJ_OPT_STAPM_LIMIT].opt = 0x14;
+    optList[ADJ_OPT_FAST_LIMIT].opt = 0x15;
+    optList[ADJ_OPT_SLOW_LIMIT].opt = 0x16;
+    optList[ADJ_OPT_SLOW_TIME].opt = 0x17;
+    optList[ADJ_OPT_STAPM_TIME].opt = 0x18;
+    optList[ADJ_OPT_TCTL_TEMP].opt = 0x19;
+    optList[ADJ_OPT_VRM_CURRENT].opt = 0x1a;
+	optList[ADJ_OPT_VRMSOC_CURRENT].opt = 0x1b;
+	optList[ADJ_OPT_VRMMAX_CURRENT].opt = 0x1c;
+    optList[ADJ_OPT_VRMSOCMAX_CURRENT].opt = 0x1d;
+    optList[ADJ_OPT_PROCHOT_DEASSERTION_RAMP].opt = 0x1f;
+    optList[ADJ_OPT_APU_SLOW_LIMIT].opt = 0x23;
+    optList[ADJ_OPT_SKIN_TEMP_POWER_LIMIT].opt = 0x4a;
+    optList[ADJ_OPT_COPER].opt = 0x4b;
+    optList[ADJ_OPT_COALL].opt = 0x4c;
+    optList[ADJ_OPT_GFX_CLK].opt = 0x89;
 }
 
 static void setStrixpointOpts(ryzen_adj_opt_t *optList) {
@@ -340,6 +361,9 @@ static void setStrixpointOpts(ryzen_adj_opt_t *optList) {
     optList[ADJ_OPT_APU_SLOW_LIMIT].opt = 0x23;
     optList[ADJ_OPT_DGPU_SKIN_TEMP_LIMIT].opt = 0x34;
     optList[ADJ_OPT_SKIN_TEMP_POWER_LIMIT].opt = 0x4a;
+    optList[ADJ_OPT_COPER].opt = 0x4b;
+    optList[ADJ_OPT_COALL].opt = 0x4c;
+    optList[ADJ_OPT_GFX_CLK].opt = 0x89;
 
     optList[ADJ_OPT_STAPM_LIMIT].opt_psmu = 0x31;
 }
@@ -362,6 +386,7 @@ static void setStrixhaloOpts(ryzen_adj_opt_t *optList) {
 	optList[ADJ_OPT_SKIN_TEMP_POWER_LIMIT].opt = 0x4a;
 	optList[ADJ_OPT_COPER].opt = 0x4b;
 	optList[ADJ_OPT_COALL].opt = 0x4c;
+    optList[ADJ_OPT_GFX_CLK].opt = 0x89;
 }
 
 static int get_apu_slow_limit_table_offset(const uint32_t table_ver) {
@@ -1573,6 +1598,7 @@ ryzen_adj_opt_t *adj_init_opt_list(const RYZEN_FAMILY family) {
 		case FAM_MENDOCINO:     setMendocinoOpts(optList); break;
 		case FAM_PHOENIX:       setPhoenixOpts(optList); break;
 		case FAM_HAWKPOINT:     setHawkpointOpts(optList); break;
+    	case FAM_KRACKAN:		setKrackanOpts(optList); break;
 		case FAM_STRIXPOINT:    setStrixpointOpts(optList); break;
 		case FAM_STRIXHALO:     setStrixhaloOpts(optList); break;
         default: break;
