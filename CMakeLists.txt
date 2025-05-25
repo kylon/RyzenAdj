@@ -11,6 +11,8 @@ check_ipo_supported(RESULT has_ipo OUTPUT error)
 
 set(PROJECT_SOURCES
     lib/osdep.h
+    lib/osdep_linux_mem.h
+    lib/osdep_linux_smu_kernel_module.h
     lib/smu_access.h
     lib/smu_access.c
     lib/ryzen_opts.h
@@ -36,6 +38,8 @@ elseif (LINUX)
 
     list(APPEND PROJECT_SOURCES
         lib/osdep_linux.c
+        lib/osdep_linux_mem.c
+        lib/osdep_linux_smu_kernel_module.c
     )
 
 else ()

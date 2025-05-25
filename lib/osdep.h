@@ -12,9 +12,6 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#define NB_PCI_REG_ADDR_ADDR			0xB8
-#define NB_PCI_REG_DATA_ADDR			0xBC
-
 #ifdef RYZENADJ_DEBUG
 #define DBG(...) fprintf(stderr, __VA_ARGS__)
 #else
@@ -26,8 +23,17 @@ typedef struct {
     uint32_t pci_address;
     HINSTANCE inpoutDll;
 #else
-    struct pci_access *pci_acc;
-    struct pci_dev *pci_dev;
+    union {
+        struct {
+            struct pci_access *pci_acc;
+            struct pci_dev *pci_dev;
+        } mem;
+        struct {
+            int smn_fd;
+            int pm_table_fd;
+            size_t pm_table_size;
+        } kmod;
+    } access;
 #endif
 } os_access_obj_t;
 
