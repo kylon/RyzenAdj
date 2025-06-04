@@ -72,7 +72,7 @@ static RYZEN_FAMILY cpuid_load_family() {
     switch (family) {
         case 0x17: { /* Zen, Zen+, Zen2 */
             switch (model) {
-                case 17: return FAM_RAVEN;
+                case 17: return FAM_RAVENRIDGE;
                 case 24: return FAM_PICASSO;
                 case 32: return FAM_DALI;
                 case 96: return FAM_RENOIR;
@@ -120,7 +120,7 @@ static ADJ_ERROR request_table_ver_and_size() {
     ADJ_ERROR ret;
 
     switch (ry->family) {
-        case FAM_RAVEN:
+        case FAM_RAVENRIDGE:
         case FAM_PICASSO:
         case FAM_DALI:
             get_table_ver_msg = 0xC;
@@ -195,7 +195,7 @@ static ADJ_ERROR request_table_addr() {
     ADJ_ERROR ret;
 
     switch (ry->family) {
-        case FAM_RAVEN:
+        case FAM_RAVENRIDGE:
         case FAM_PICASSO:
         case FAM_DALI:
             args.arg0 = 3;
@@ -245,7 +245,7 @@ static ADJ_ERROR request_table_addr() {
 
 static ADJ_ERROR set_transfer_table_req_data() {
     switch (ry->family) {
-        case FAM_RAVEN:
+        case FAM_RAVENRIDGE:
         case FAM_PICASSO:
         case FAM_DALI:
             ry->transfer_table_req.arg0 = 3;

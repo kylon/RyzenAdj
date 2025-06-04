@@ -4,7 +4,7 @@
 
 #include "ryzen_opts.h"
 
-static void setRavenOpts(ryzen_adj_opt_t *optList) {
+static void setRavenRidgeOpts(ryzen_adj_opt_t *optList) {
     optList[ADJ_OPT_CCLK_BUSY].opt = 0x18;
     optList[ADJ_OPT_CCLK_SETPOINT].opt = 0x19;
     optList[ADJ_OPT_STAPM_LIMIT].opt = 0x1a;
@@ -1587,7 +1587,7 @@ ryzen_adj_opt_t *adj_init_opt_list(const RYZEN_FAMILY family) {
     init_opts(optList);
 
     switch (family) {
-		case FAM_RAVEN:         setRavenOpts(optList); break;
+		case FAM_RAVENRIDGE:    setRavenRidgeOpts(optList); break;
 		case FAM_PICASSO:       setPicassoOpts(optList); break;
 		case FAM_DALI:          setDaliOpts(optList); break;
 		case FAM_RENOIR:        setRenoirOpts(optList); break;

@@ -33,7 +33,7 @@ extern "C" {
 
 typedef enum {
     FAM_UNKNOWN = -1,
-    FAM_RAVEN = 0,
+    FAM_RAVENRIDGE = 0,
     FAM_PICASSO,
     FAM_RENOIR,
     FAM_CEZANNE,
