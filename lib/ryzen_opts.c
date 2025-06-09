@@ -391,25 +391,25 @@ static void setStrixhaloOpts(ryzen_adj_opt_t *optList) {
 
 static int get_apu_slow_limit_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
-		case 0x003F0000:
-		case 0x00400001:
-		case 0x00400002:
-		case 0x00400003:
-		case 0x00400004:
-		case 0x00400005:
-		case 0x00450004:
-		case 0x00450005:
-		case 0x004C0006:
-		case 0x004C0007:
-		case 0x004C0008:
-		case 0x004C0009:
-		case 0x0064020c: // StrixHalo - looks correct from dumping table, defaults to 70W
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
+		case 0x3F0000:
+		case 0x400001:
+		case 0x400002:
+		case 0x400003:
+		case 0x400004:
+		case 0x400005:
+		case 0x450004:
+		case 0x450005:
+		case 0x4C0006:
+		case 0x4C0007:
+		case 0x4C0008:
+		case 0x4C0009:
+		case 0x64020c: // StrixHalo - looks correct from dumping table, defaults to 70W
 			return 0x18;
 		default:
 			break;
@@ -419,23 +419,23 @@ static int get_apu_slow_limit_table_offset(const uint32_t table_ver) {
 }
 static int get_apu_slow_value_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
-		case 0x003F0000:
-		case 0x00400001:
-		case 0x00400002:
-		case 0x00400003:
-		case 0x00400004:
-		case 0x00400005:
-		case 0x00450004:
-		case 0x00450005:
-		case 0x004C0006:
-		case 0x004C0009:
-		case 0x0064020c: // StrixHalo - untested!
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
+		case 0x3F0000:
+		case 0x400001:
+		case 0x400002:
+		case 0x400003:
+		case 0x400004:
+		case 0x400005:
+		case 0x450004:
+		case 0x450005:
+		case 0x4C0006:
+		case 0x4C0009:
+		case 0x64020c: // StrixHalo - untested!
 			return 0x1C;
 		default:
 			break;
@@ -445,31 +445,31 @@ static int get_apu_slow_value_table_offset(const uint32_t table_ver) {
 }
 static int get_vrm_current_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x001E0001:
-		case 0x001E0002:
-		case 0x001E0003:
-		case 0x001E0004:
-		case 0x001E0005:
-		case 0x001E000A:
-		case 0x001E0101:
+		case 0x1E0001:
+		case 0x1E0002:
+		case 0x1E0003:
+		case 0x1E0004:
+		case 0x1E0005:
+		case 0x1E000A:
+		case 0x1E0101:
 			return 0x18;
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
-		case 0x00400001:
-		case 0x00400002:
-		case 0x00400003:
-		case 0x00400004:
-		case 0x00400005:
-		case 0x00450004:
-		case 0x00450005:
-		case 0x004C0006:
-		case 0x004C0007:
-		case 0x004C0008:
-		case 0x004C0009:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
+		case 0x400001:
+		case 0x400002:
+		case 0x400003:
+		case 0x400004:
+		case 0x400005:
+		case 0x450004:
+		case 0x450005:
+		case 0x4C0006:
+		case 0x4C0007:
+		case 0x4C0008:
+		case 0x4C0009:
 			return 0x20;
 		default:
 			break;
@@ -479,31 +479,31 @@ static int get_vrm_current_table_offset(const uint32_t table_ver) {
 }
 static int get_vrm_current_value_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x001E0001:
-		case 0x001E0002:
-		case 0x001E0003:
-		case 0x001E0004:
-		case 0x001E0005:
-		case 0x001E000A:
-		case 0x001E0101:
+		case 0x1E0001:
+		case 0x1E0002:
+		case 0x1E0003:
+		case 0x1E0004:
+		case 0x1E0005:
+		case 0x1E000A:
+		case 0x1E0101:
 			return 0x1C;
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
-		case 0x00400001:
-		case 0x00400002:
-		case 0x00400003:
-		case 0x00400004:
-		case 0x00400005:
-		case 0x00450004:
-		case 0x00450005:
-		case 0x004C0006:
-		case 0x004C0007:
-		case 0x004C0008:
-		case 0x004C0009:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
+		case 0x400001:
+		case 0x400002:
+		case 0x400003:
+		case 0x400004:
+		case 0x400005:
+		case 0x450004:
+		case 0x450005:
+		case 0x4C0006:
+		case 0x4C0007:
+		case 0x4C0008:
+		case 0x4C0009:
 			return 0x24;
 		default:
 			break;
@@ -513,31 +513,31 @@ static int get_vrm_current_value_table_offset(const uint32_t table_ver) {
 }
 static int get_vrmsoc_current_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x001E0001:
-		case 0x001E0002:
-		case 0x001E0003:
-		case 0x001E0004:
-		case 0x001E0005:
-		case 0x001E000A:
-		case 0x001E0101:
+		case 0x1E0001:
+		case 0x1E0002:
+		case 0x1E0003:
+		case 0x1E0004:
+		case 0x1E0005:
+		case 0x1E000A:
+		case 0x1E0101:
 			return 0x20;
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
-		case 0x00400001:
-		case 0x00400002:
-		case 0x00400003:
-		case 0x00400004:
-		case 0x00400005:
-		case 0x00450004:
-		case 0x00450005:
-		case 0x004C0006:
-		case 0x004C0007:
-		case 0x004C0008:
-		case 0x004C0009:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
+		case 0x400001:
+		case 0x400002:
+		case 0x400003:
+		case 0x400004:
+		case 0x400005:
+		case 0x450004:
+		case 0x450005:
+		case 0x4C0006:
+		case 0x4C0007:
+		case 0x4C0008:
+		case 0x4C0009:
 			return 0x28;
 		default:
 			break;
@@ -547,31 +547,31 @@ static int get_vrmsoc_current_table_offset(const uint32_t table_ver) {
 }
 static int get_vrmsoc_current_value_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x001E0001:
-		case 0x001E0002:
-		case 0x001E0003:
-		case 0x001E0004:
-		case 0x001E0005:
-		case 0x001E000A:
-		case 0x001E0101:
+		case 0x1E0001:
+		case 0x1E0002:
+		case 0x1E0003:
+		case 0x1E0004:
+		case 0x1E0005:
+		case 0x1E000A:
+		case 0x1E0101:
 			return 0x24;
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
-		case 0x00400001:
-		case 0x00400002:
-		case 0x00400003:
-		case 0x00400004:
-		case 0x00400005:
-		case 0x00450004:
-		case 0x00450005:
-		case 0x004C0006:
-		case 0x004C0007:
-		case 0x004C0008:
-		case 0x004C0009:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
+		case 0x400001:
+		case 0x400002:
+		case 0x400003:
+		case 0x400004:
+		case 0x400005:
+		case 0x450004:
+		case 0x450005:
+		case 0x4C0006:
+		case 0x4C0007:
+		case 0x4C0008:
+		case 0x4C0009:
 			return 0x2C;
 		default:
 			break;
@@ -581,31 +581,31 @@ static int get_vrmsoc_current_value_table_offset(const uint32_t table_ver) {
 }
 static int get_vrmmax_current_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x001E0001:
-		case 0x001E0002:
-		case 0x001E0003:
-		case 0x001E0004:
-		case 0x001E0005:
-		case 0x001E000A:
-		case 0x001E0101:
+		case 0x1E0001:
+		case 0x1E0002:
+		case 0x1E0003:
+		case 0x1E0004:
+		case 0x1E0005:
+		case 0x1E000A:
+		case 0x1E0101:
 			return 0x28;
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
-		case 0x00400001:
-		case 0x00400002:
-		case 0x00400003:
-		case 0x00400004:
-		case 0x00400005:
-		case 0x00450004:
-		case 0x00450005:
-		case 0x004C0006:
-		case 0x004C0007:
-		case 0x004C0008:
-		case 0x004C0009:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
+		case 0x400001:
+		case 0x400002:
+		case 0x400003:
+		case 0x400004:
+		case 0x400005:
+		case 0x450004:
+		case 0x450005:
+		case 0x4C0006:
+		case 0x4C0007:
+		case 0x4C0008:
+		case 0x4C0009:
 			return 0x30;
 		default:
 			break;
@@ -615,31 +615,31 @@ static int get_vrmmax_current_table_offset(const uint32_t table_ver) {
 }
 static int get_vrmmax_current_value_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x001E0001:
-		case 0x001E0002:
-		case 0x001E0003:
-		case 0x001E0004:
-		case 0x001E0005:
-		case 0x001E000A:
-		case 0x001E0101:
+		case 0x1E0001:
+		case 0x1E0002:
+		case 0x1E0003:
+		case 0x1E0004:
+		case 0x1E0005:
+		case 0x1E000A:
+		case 0x1E0101:
 			return 0x2C;
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
-		case 0x00400001:
-		case 0x00400002:
-		case 0x00400003:
-		case 0x00400004:
-		case 0x00400005:
-		case 0x00450004:
-		case 0x00450005:
-		case 0x004C0006:
-		case 0x004C0007:
-		case 0x004C0008:
-		case 0x004C0009:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
+		case 0x400001:
+		case 0x400002:
+		case 0x400003:
+		case 0x400004:
+		case 0x400005:
+		case 0x450004:
+		case 0x450005:
+		case 0x4C0006:
+		case 0x4C0007:
+		case 0x4C0008:
+		case 0x4C0009:
 			return 0x34;
 		default:
 			break;
@@ -649,31 +649,31 @@ static int get_vrmmax_current_value_table_offset(const uint32_t table_ver) {
 }
 static int get_vrmsocmax_current_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x001E0001:
-		case 0x001E0002:
-		case 0x001E0003:
-		case 0x001E0004:
-		case 0x001E0005:
-		case 0x001E000A:
-		case 0x001E0101:
+		case 0x1E0001:
+		case 0x1E0002:
+		case 0x1E0003:
+		case 0x1E0004:
+		case 0x1E0005:
+		case 0x1E000A:
+		case 0x1E0101:
 			return 0x34;
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
-		case 0x00400001:
-		case 0x00400002:
-		case 0x00400003:
-		case 0x00400004:
-		case 0x00400005:
-		case 0x00450004:
-		case 0x00450005:
-		case 0x004C0006:
-		case 0x004C0007:
-		case 0x004C0008:
-		case 0x004C0009:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
+		case 0x400001:
+		case 0x400002:
+		case 0x400003:
+		case 0x400004:
+		case 0x400005:
+		case 0x450004:
+		case 0x450005:
+		case 0x4C0006:
+		case 0x4C0007:
+		case 0x4C0008:
+		case 0x4C0009:
 			return 0x38;
 		default:
 			break;
@@ -683,31 +683,31 @@ static int get_vrmsocmax_current_table_offset(const uint32_t table_ver) {
 }
 static int get_vrmsocmax_current_value_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x001E0001:
-		case 0x001E0002:
-		case 0x001E0003:
-		case 0x001E0004:
-		case 0x001E0005:
-		case 0x001E000A:
-		case 0x001E0101:
+		case 0x1E0001:
+		case 0x1E0002:
+		case 0x1E0003:
+		case 0x1E0004:
+		case 0x1E0005:
+		case 0x1E000A:
+		case 0x1E0101:
 			return 0x38;
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
-		case 0x00400001:
-		case 0x00400002:
-		case 0x00400003:
-		case 0x00400004:
-		case 0x00400005:
-		case 0x00450004:
-		case 0x00450005:
-		case 0x004C0006:
-		case 0x004C0007:
-		case 0x004C0008:
-		case 0x004C0009:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
+		case 0x400001:
+		case 0x400002:
+		case 0x400003:
+		case 0x400004:
+		case 0x400005:
+		case 0x450004:
+		case 0x450005:
+		case 0x4C0006:
+		case 0x4C0007:
+		case 0x4C0008:
+		case 0x4C0009:
 			return 0x3C;
 		default:
 			break;
@@ -717,33 +717,33 @@ static int get_vrmsocmax_current_value_table_offset(const uint32_t table_ver) {
 }
 static int get_tctl_temp_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x001E0001:
-		case 0x001E0002:
-		case 0x001E0003:
-		case 0x001E0004:
-		case 0x001E0005:
-		case 0x001E000A:
-		case 0x001E0101:
-		case 0x0064020c:
+		case 0x1E0001:
+		case 0x1E0002:
+		case 0x1E0003:
+		case 0x1E0004:
+		case 0x1E0005:
+		case 0x1E000A:
+		case 0x1E0101:
+		case 0x64020c:
 			return 0x58; //use core1 because core0 is not reported on dual core cpus
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
-		case 0x003F0000:
-		case 0x00400001:
-		case 0x00400002:
-		case 0x00400003:
-		case 0x00400004:
-		case 0x00400005:
-		case 0x00450004:
-		case 0x00450005:
-		case 0x004C0006:
-		case 0x004C0007:
-		case 0x004C0008:
-		case 0x004C0009:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
+		case 0x3F0000:
+		case 0x400001:
+		case 0x400002:
+		case 0x400003:
+		case 0x400004:
+		case 0x400005:
+		case 0x450004:
+		case 0x450005:
+		case 0x4C0006:
+		case 0x4C0007:
+		case 0x4C0008:
+		case 0x4C0009:
 			return 0x40;
 		default:
 			break;
@@ -753,33 +753,33 @@ static int get_tctl_temp_table_offset(const uint32_t table_ver) {
 }
 static int get_tctl_temp_value_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x001E0001:
-		case 0x001E0002:
-		case 0x001E0003:
-		case 0x001E0004:
-		case 0x001E0005:
-		case 0x001E000A:
-		case 0x001E0101:
-		case 0x0064020c:
+		case 0x1E0001:
+		case 0x1E0002:
+		case 0x1E0003:
+		case 0x1E0004:
+		case 0x1E0005:
+		case 0x1E000A:
+		case 0x1E0101:
+		case 0x64020c:
 			return 0x5C; //use core1 because core0 is not reported on dual core cpus
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
-		case 0x003F0000:
-		case 0x00400001:
-		case 0x00400002:
-		case 0x00400003:
-		case 0x00400004:
-		case 0x00400005:
-		case 0x00450004:
-		case 0x00450005:
-		case 0x004C0006:
-		case 0x004C0007:
-		case 0x004C0008:
-		case 0x004C0009:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
+		case 0x3F0000:
+		case 0x400001:
+		case 0x400002:
+		case 0x400003:
+		case 0x400004:
+		case 0x400005:
+		case 0x450004:
+		case 0x450005:
+		case 0x4C0006:
+		case 0x4C0007:
+		case 0x4C0008:
+		case 0x4C0009:
 			return 0x44;
 		default:
 			break;
@@ -789,25 +789,25 @@ static int get_tctl_temp_value_table_offset(const uint32_t table_ver) {
 }
 static int get_apu_skin_temp_limit_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
-		case 0x003F0000:
-		case 0x00400001:
-		case 0x00400002:
-		case 0x00400003:
-		case 0x00400004:
-		case 0x00400005:
-		case 0x00450004:
-		case 0x00450005:
-		case 0x004C0006:
-		case 0x004C0007:
-		case 0x004C0008:
-		case 0x004C0009:
-		case 0x0064020c:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
+		case 0x3F0000:
+		case 0x400001:
+		case 0x400002:
+		case 0x400003:
+		case 0x400004:
+		case 0x400005:
+		case 0x450004:
+		case 0x450005:
+		case 0x4C0006:
+		case 0x4C0007:
+		case 0x4C0008:
+		case 0x4C0009:
+		case 0x64020c:
 			return 0x58;
 		default:
 			break;
@@ -817,25 +817,25 @@ static int get_apu_skin_temp_limit_table_offset(const uint32_t table_ver) {
 }
 static int get_apu_skin_temp_value_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
-		case 0x003F0000:
-		case 0x00400001:
-		case 0x00400002:
-		case 0x00400003:
-		case 0x00400004:
-		case 0x00400005:
-		case 0x00450004:
-		case 0x00450005:
-		case 0x004C0006:
-		case 0x004C0007:
-		case 0x004C0008:
-		case 0x004C0009:
-		case 0x0064020c:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
+		case 0x3F0000:
+		case 0x400001:
+		case 0x400002:
+		case 0x400003:
+		case 0x400004:
+		case 0x400005:
+		case 0x450004:
+		case 0x450005:
+		case 0x4C0006:
+		case 0x4C0007:
+		case 0x4C0008:
+		case 0x4C0009:
+		case 0x64020c:
 			return 0x5C;
 		default:
 			break;
@@ -845,24 +845,24 @@ static int get_apu_skin_temp_value_table_offset(const uint32_t table_ver) {
 }
 static int get_dgpu_skin_temp_limit_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
-		case 0x00400001:
-		case 0x00400002:
-		case 0x00400003:
-		case 0x00400004:
-		case 0x00400005:
-		case 0x00450004:
-		case 0x00450005:
-		case 0x004C0006:
-		case 0x004C0007:
-		case 0x004C0008:
-		case 0x004C0009:
-		case 0x0064020c:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
+		case 0x400001:
+		case 0x400002:
+		case 0x400003:
+		case 0x400004:
+		case 0x400005:
+		case 0x450004:
+		case 0x450005:
+		case 0x4C0006:
+		case 0x4C0007:
+		case 0x4C0008:
+		case 0x4C0009:
+		case 0x64020c:
 			return 0x60;
 		default:
 			break;
@@ -872,24 +872,24 @@ static int get_dgpu_skin_temp_limit_table_offset(const uint32_t table_ver) {
 }
 static int get_dgpu_skin_temp_value_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
-		case 0x00400001:
-		case 0x00400002:
-		case 0x00400003:
-		case 0x00400004:
-		case 0x00400005:
-		case 0x00450004:
-		case 0x00450005:
-		case 0x004C0006:
-		case 0x004C0007:
-		case 0x004C0008:
-		case 0x004C0009:
-		case 0x0064020c:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
+		case 0x400001:
+		case 0x400002:
+		case 0x400003:
+		case 0x400004:
+		case 0x400005:
+		case 0x450004:
+		case 0x450005:
+		case 0x4C0006:
+		case 0x4C0007:
+		case 0x4C0008:
+		case 0x4C0009:
+		case 0x64020c:
 			return 0x64;
 		default:
 			break;
@@ -900,29 +900,29 @@ static int get_dgpu_skin_temp_value_table_offset(const uint32_t table_ver) {
 
 static int get_psi0_current_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x001E0001:
-		case 0x001E0002:
-		case 0x001E0003:
-		case 0x001E0004:
-		case 0x001E0005:
-		case 0x001E000A:
-		case 0x001E0101:
+		case 0x1E0001:
+		case 0x1E0002:
+		case 0x1E0003:
+		case 0x1E0004:
+		case 0x1E0005:
+		case 0x1E000A:
+		case 0x1E0101:
 			return 0x40;
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
-		case 0x00400001:
-		case 0x00400002:
-		case 0x00400003:
-		case 0x00400004:
-		case 0x00400005:
-		case 0x004C0006:
-		case 0x004C0007:
-		case 0x004C0008:
-		case 0x004C0009:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
+		case 0x400001:
+		case 0x400002:
+		case 0x400003:
+		case 0x400004:
+		case 0x400005:
+		case 0x4C0006:
+		case 0x4C0007:
+		case 0x4C0008:
+		case 0x4C0009:
 			return 0x78;
 		default:
 			break;
@@ -933,29 +933,29 @@ static int get_psi0_current_table_offset(const uint32_t table_ver) {
 
 static int get_psi0soc_current_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x001E0001:
-		case 0x001E0002:
-		case 0x001E0003:
-		case 0x001E0004:
-		case 0x001E0005:
-		case 0x001E000A:
-		case 0x001E0101:
+		case 0x1E0001:
+		case 0x1E0002:
+		case 0x1E0003:
+		case 0x1E0004:
+		case 0x1E0005:
+		case 0x1E000A:
+		case 0x1E0101:
 			return 0x48;
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
-		case 0x00400001:
-		case 0x00400002:
-		case 0x00400003:
-		case 0x00400004:
-		case 0x00400005:
-		case 0x004C0006:
-		case 0x004C0007:
-		case 0x004C0008:
-		case 0x004C0009:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
+		case 0x400001:
+		case 0x400002:
+		case 0x400003:
+		case 0x400004:
+		case 0x400005:
+		case 0x4C0006:
+		case 0x4C0007:
+		case 0x4C0008:
+		case 0x4C0009:
 			return 0x80;
 		default:
 			break;
@@ -966,26 +966,26 @@ static int get_psi0soc_current_table_offset(const uint32_t table_ver) {
 
 static int get_cclk_setpoint_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x001E0001:
-		case 0x001E0002:
-		case 0x001E0003:
-		case 0x001E0004:
-		case 0x001E0005:
-		case 0x001E000A:
-		case 0x001E0101:
+		case 0x1E0001:
+		case 0x1E0002:
+		case 0x1E0003:
+		case 0x1E0004:
+		case 0x1E0005:
+		case 0x1E000A:
+		case 0x1E0101:
 			return 0x98; //use core1 because core0 is not reported on dual core cpus;
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
 			return 0xFC;
-		case 0x00400001:
-		case 0x00400002:
-		case 0x00400003:
-		case 0x00400004:
-		case 0x00400005:
+		case 0x400001:
+		case 0x400002:
+		case 0x400003:
+		case 0x400004:
+		case 0x400005:
 			return 0x100;
 		default:
 			break;
@@ -996,26 +996,26 @@ static int get_cclk_setpoint_table_offset(const uint32_t table_ver) {
 
 static int get_cclk_busy_value_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x001E0001:
-		case 0x001E0002:
-		case 0x001E0003:
-		case 0x001E0004:
-		case 0x001E0005:
-		case 0x001E000A:
-		case 0x001E0101:
+		case 0x1E0001:
+		case 0x1E0002:
+		case 0x1E0003:
+		case 0x1E0004:
+		case 0x1E0005:
+		case 0x1E000A:
+		case 0x1E0101:
 			return 0x9C; //use core1 because core0 is not reported on dual core cpus
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
 			return 0x100;
-		case 0x00400001:
-		case 0x00400002:
-		case 0x00400003:
-		case 0x00400004:
-		case 0x00400005:
+		case 0x400001:
+		case 0x400002:
+		case 0x400003:
+		case 0x400004:
+		case 0x400005:
 			return 0x104;
 		default:
 			break;
@@ -1026,38 +1026,38 @@ static int get_cclk_busy_value_table_offset(const uint32_t table_ver) {
 
 static int get_stapm_time_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x001E0002:
+		case 0x1E0002:
 			return 0x564;
-		case 0x001E0003:
+		case 0x1E0003:
 			return 0x55C;
-		case 0x001E0004:
-		case 0x001E0005:
-		case 0x001E000A:
-		case 0x001E0101:
+		case 0x1E0004:
+		case 0x1E0005:
+		case 0x1E000A:
+		case 0x1E0101:
 			return 0x5E0;
-		case 0x00370000:
+		case 0x370000:
 			return 0x768;
-		case 0x00370001:
+		case 0x370001:
 			return 0x858;
-		case 0x00370002:
+		case 0x370002:
 			return 0x860;
-		case 0x00370003:
-		case 0x00370004:
+		case 0x370003:
+		case 0x370004:
 			return 0x880;
-		case 0x00370005:
+		case 0x370005:
 			return 0x89C;
-		case 0x00400001:
+		case 0x400001:
 			return 0x8E4;
-		case 0x00400002:
+		case 0x400002:
 			return 0x8FC;
-		case 0x00400003:
+		case 0x400003:
 			return 0x920;
-		case 0x00400004:
-		case 0x00400005:
-		case 0x004C0006:
-		case 0x004C0007:
-		case 0x004C0008:
-		case 0x004C0009:
+		case 0x400004:
+		case 0x400005:
+		case 0x4C0006:
+		case 0x4C0007:
+		case 0x4C0008:
+		case 0x4C0009:
 			return 0x918;
 		default:
 			break;
@@ -1068,38 +1068,38 @@ static int get_stapm_time_table_offset(const uint32_t table_ver) {
 
 static int get_slow_time_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x001E0002:
+		case 0x1E0002:
 			return 0x568;
-		case 0x001E0003:
+		case 0x1E0003:
 			return 0x560;
-		case 0x001E0004:
-		case 0x001E0005:
-		case 0x001E000A:
-		case 0x001E0101:
+		case 0x1E0004:
+		case 0x1E0005:
+		case 0x1E000A:
+		case 0x1E0101:
 			return 0x5E4;
-		case 0x00370000:
+		case 0x370000:
 			return 0x76C;
-		case 0x00370001:
+		case 0x370001:
 			return 0x85C;
-		case 0x00370002:
+		case 0x370002:
 			return 0x864;
-		case 0x00370003:
-		case 0x00370004:
+		case 0x370003:
+		case 0x370004:
 			return 0x884;
-		case 0x00370005:
+		case 0x370005:
 			return 0x8A0;
-		case 0x00400001:
+		case 0x400001:
 			return 0x8E8;
-		case 0x00400002:
+		case 0x400002:
 			return 0x900;
-		case 0x00400003:
+		case 0x400003:
 			return 0x924;
-		case 0x00400004:
-		case 0x00400005:
-		case 0x004C0006:
-		case 0x004C0007:
-		case 0x004C0008:
-		case 0x004C0009:
+		case 0x400004:
+		case 0x400005:
+		case 0x4C0006:
+		case 0x4C0007:
+		case 0x4C0008:
+		case 0x4C0009:
 			return 0x91C;
 		default:
 			break;
@@ -1110,27 +1110,27 @@ static int get_slow_time_table_offset(const uint32_t table_ver) {
 
 static int is_core_available_in_table(const uint32_t table_ver, const int core) {
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
-		case 0x00400001:
-		case 0x00400004:
-		case 0x00400005: {
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
+		case 0x400001:
+		case 0x400004:
+		case 0x400005: {
 			if (core > 7)
 				break;
 
 			return 1;
 		}
-		case 0x003F0000: { // Van Gogh
+		case 0x3F0000: { // Van Gogh
 			if (core > 3)
 				break;
 
 			return 1;
 		}
-		case 0x0064020c: { // Strix Halo
+		case 0x64020c: { // Strix Halo
 			if (core > 15)
 				break;
 
@@ -1150,27 +1150,27 @@ static int get_core_power_table_offset(const uint32_t table_ver, const int core)
 		return -1;
 
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
 			baseOffset = 0x300;
 			break;
-		case 0x00370005:
+		case 0x370005:
 			baseOffset = 0x31C;
 			break;
-		case 0x003F0000: // Van Gogh
+		case 0x3F0000: // Van Gogh
 			baseOffset = 0x238;
 			break;
-		case 0x00400001:
+		case 0x400001:
 			baseOffset = 0x304;
 			break;
-		case 0x00400004:
-		case 0x00400005:
+		case 0x400004:
+		case 0x400005:
 			baseOffset = 0x320;
 			break;
-		case 0x0064020c: // Strix Halo
+		case 0x64020c: // Strix Halo
 			baseOffset = 0xB90;
 			break;
 		default:
@@ -1187,24 +1187,24 @@ static int get_core_volt_table_offset(const uint32_t table_ver, const int core) 
 		return -1;
 
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
 			baseOffset = 0x320;
 			break;
-		case 0x00370005:
+		case 0x370005:
 			baseOffset = 0x33C;
 			break;
-		case 0x003F0000: // Van Gogh
+		case 0x3F0000: // Van Gogh
 			baseOffset = 0x248;
 			break;
-		case 0x00400004:
-		case 0x00400005:
+		case 0x400004:
+		case 0x400005:
 			baseOffset = 0x340;
 			break;
-		case 0x0064020c: // Strix Halo
+		case 0x64020c: // Strix Halo
 			baseOffset = 0xBD0;
 			break;
 		default:
@@ -1221,24 +1221,24 @@ static int get_core_temp_table_offset(const uint32_t table_ver, const int core) 
 		return -1;
 
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
 			baseOffset = 0x340;
 			break;
-		case 0x00370005:
+		case 0x370005:
 			baseOffset = 0x35C;
 			break;
-		case 0x003F0000: // Van Gogh
+		case 0x3F0000: // Van Gogh
 			baseOffset = 0x258;
 			break;
-		case 0x00400004:
-		case 0x00400005:
+		case 0x400004:
+		case 0x400005:
 			baseOffset = 0x360;
 			break;
-		case 0x0064020c: // Strix Halo
+		case 0x64020c: // Strix Halo
 			baseOffset = 0xC10;
 			break;
 		default:
@@ -1255,24 +1255,24 @@ static int get_core_clk_table_offset(const uint32_t table_ver, const int core) {
 		return -1;
 
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
 			baseOffset = 0x3A0;
 			break;
-		case 0x00370005:
+		case 0x370005:
 			baseOffset = 0x3BC;
 			break;
-		case 0x003F0000: // Van Gogh
+		case 0x3F0000: // Van Gogh
 			baseOffset = 0x288;
 			break;
-		case 0x00400004:
-		case 0x00400005:
+		case 0x400004:
+		case 0x400005:
 			baseOffset = 0x3c0;
 			break;
-		case 0x0064020c:
+		case 0x64020c:
 			baseOffset = 0xc50;
 			break;
 		default:
@@ -1284,18 +1284,18 @@ static int get_core_clk_table_offset(const uint32_t table_ver, const int core) {
 
 static int get_l3_clk_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
 			return 0x568;
-		case 0x00370005:
+		case 0x370005:
 			return 0x584;
-		case 0x003F0000: //Van Gogh
+		case 0x3F0000: //Van Gogh
 			return 0x35C;
-		case 0x00400004:
-		case 0x00400005:
+		case 0x400004:
+		case 0x400005:
 			return 0x614;
 		default:
 			break;
@@ -1306,18 +1306,18 @@ static int get_l3_clk_table_offset(const uint32_t table_ver) {
 
 static int get_l3_logic_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
 			return 0x540;
-		case 0x00370005:
+		case 0x370005:
 			return 0x55C;
-		case 0x003F0000: //Van Gogh
+		case 0x3F0000: //Van Gogh
 			return 0x348;
-		case 0x00400004:
-		case 0x00400005:
+		case 0x400004:
+		case 0x400005:
 			return 0x600;
 		default:
 			break;
@@ -1328,18 +1328,18 @@ static int get_l3_logic_table_offset(const uint32_t table_ver) {
 
 static int get_l3_vddm_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
 			return 0x548;
-		case 0x00370005:
+		case 0x370005:
 			return 0x564;
-		case 0x003F0000: //Van Gogh
+		case 0x3F0000: //Van Gogh
 			return 0x34C;
-		case 0x00400004:
-		case 0x00400005:
+		case 0x400004:
+		case 0x400005:
 			return 0x604;
 		default:
 			break;
@@ -1350,18 +1350,18 @@ static int get_l3_vddm_table_offset(const uint32_t table_ver) {
 
 static int get_l3_temp_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
 			return 0x550;
-		case 0x00370005:
+		case 0x370005:
 			return 0x56C;
-		case 0x003F0000: //Van Gogh
+		case 0x3F0000: //Van Gogh
 			return 0x350;
-		case 0x00400004:
-		case 0x00400005:
+		case 0x400004:
+		case 0x400005:
 			return 0x608;
 		default:
 			break;
@@ -1372,26 +1372,26 @@ static int get_l3_temp_table_offset(const uint32_t table_ver) {
 
 static int get_gfx_clk_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
 			return 0x5B4;
-		case 0x00370005:
+		case 0x370005:
 			return 0x5D0;
-		case 0x00400001:
+		case 0x400001:
 			return 0x60C;
-		case 0x00400002:
+		case 0x400002:
 			return 0x624;
-		case 0x00400003:
+		case 0x400003:
 			return 0x644;
-		case 0x00400004:
-		case 0x00400005:
+		case 0x400004:
+		case 0x400005:
 			return 0x648;
-		case 0x003F0000: //Van Gogh
+		case 0x3F0000: //Van Gogh
 			return 0x388;
-		case 0x0064020c: // Strix Halo
+		case 0x64020c: // Strix Halo
 			return 0x558;
 		default:
 			break;
@@ -1402,26 +1402,26 @@ static int get_gfx_clk_table_offset(const uint32_t table_ver) {
 
 static int get_gfx_volt_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
 			return 0x5A8;
-		case 0x00370005:
+		case 0x370005:
 			return 0x5C4;
-		case 0x00400001:
+		case 0x400001:
 			return 0x600;
-		case 0x00400002:
+		case 0x400002:
 			return 0x618;
-		case 0x00400003:
+		case 0x400003:
 			return 0x638;
-		case 0x00400004:
-		case 0x00400005:
+		case 0x400004:
+		case 0x400005:
 			return 0x63C;
-		case 0x003F0000: //Van Gogh
+		case 0x3F0000: //Van Gogh
 			return 0x37C;
-		case 0x0064020c: // Strix Halo
+		case 0x64020c: // Strix Halo
 			return 0x54C;
 		default:
 			break;
@@ -1432,26 +1432,26 @@ static int get_gfx_volt_table_offset(const uint32_t table_ver) {
 
 static int get_gfx_temp_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
 			return 0x5AC;
-		case 0x00370005:
+		case 0x370005:
 			return 0x5C8;
-		case 0x00400001:
+		case 0x400001:
 			return 0x604;
-		case 0x00400002:
+		case 0x400002:
 			return 0x61C;
-		case 0x00400003:
+		case 0x400003:
 			return 0x63C;
-		case 0x00400004:
-		case 0x00400005:
+		case 0x400004:
+		case 0x400005:
 			return 0x640;
-		case 0x003F0000: //Van Gogh
+		case 0x3F0000: //Van Gogh
 			return 0x380;
-		case 0x0064020c: // Strix Halo
+		case 0x64020c: // Strix Halo
 			return 0x550;
 		default:
 			break;
@@ -1462,18 +1462,18 @@ static int get_gfx_temp_table_offset(const uint32_t table_ver) {
 
 static int get_fclk_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
 			return 0x5CC;
-		case 0x00370005:
+		case 0x370005:
 			return 0x5E8;
-		case 0x003F0000: //Van Gogh
+		case 0x3F0000: //Van Gogh
 			return 0x3C5;
-		case 0x00400004:
-		case 0x00400005:
+		case 0x400004:
+		case 0x400005:
 			return 0x664;
 		default:
 			break;
@@ -1484,18 +1484,18 @@ static int get_fclk_table_offset(const uint32_t table_ver) {
 
 static int get_mem_clk_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
 			return 0x5D4;
-		case 0x00370005:
+		case 0x370005:
 			return 0x5F0;
-		case 0x003F0000: //Van Gogh
+		case 0x3F0000: //Van Gogh
 			return 0x3C4;
-		case 0x00400004:
-		case 0x00400005:
+		case 0x400004:
+		case 0x400005:
 			return 0x66c;
 		default:
 			break;
@@ -1506,17 +1506,17 @@ static int get_mem_clk_table_offset(const uint32_t table_ver) {
 
 static int get_soc_volt_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
 			return 0x198;
-		case 0x003F0000: //Van Gogh
+		case 0x3F0000: //Van Gogh
 			return 0x1A0;
-		case 0x00400004:
-		case 0x00400005:
+		case 0x400004:
+		case 0x400005:
 			return 0x19c;
 		default:
 			break;
@@ -1527,17 +1527,17 @@ static int get_soc_volt_table_offset(const uint32_t table_ver) {
 
 static int get_soc_power_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
 			return 0x1A0;
-		case 0x003F0000: //Van Gogh
+		case 0x3F0000: //Van Gogh
 			return 0x1A8;
-		case 0x00400004:
-		case 0x00400005:
+		case 0x400004:
+		case 0x400005:
 			return 0x1a4;
 		default:
 			break;
@@ -1548,19 +1548,19 @@ static int get_soc_power_table_offset(const uint32_t table_ver) {
 
 static int get_socket_power_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
-		case 0x00370000:
-		case 0x00370001:
-		case 0x00370002:
-		case 0x00370003:
-		case 0x00370004:
-		case 0x00370005:
-		case 0x00400001:
-		case 0x00400002:
-		case 0x00400003:
-		case 0x00400004:
-		case 0x00400005:
+		case 0x370000:
+		case 0x370001:
+		case 0x370002:
+		case 0x370003:
+		case 0x370004:
+		case 0x370005:
+		case 0x400001:
+		case 0x400002:
+		case 0x400003:
+		case 0x400004:
+		case 0x400005:
 			return 0x98;
-		case 0x003F0000: //Van Gogh
+		case 0x3F0000: //Van Gogh
 			return 0xA8;
 		default:
 			break;
