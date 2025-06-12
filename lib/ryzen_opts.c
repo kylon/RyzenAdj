@@ -216,7 +216,6 @@ static void setVangoghOpts(ryzen_adj_opt_t *optList) {
     optList[ADJ_OPT_GFX_CLK].opt = 0x89;
 
     optList[ADJ_OPT_STAPM_LIMIT].opt_psmu = 0x31;
-    optList[ADJ_OPT_COGFX].opt_psmu = 0xB7;
 }
 
 static void setRembrandtOpts(ryzen_adj_opt_t *optList) {
