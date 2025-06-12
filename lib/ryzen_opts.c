@@ -236,8 +236,6 @@ static void setRembrandtOpts(ryzen_adj_opt_t *optList) {
     optList[ADJ_OPT_APU_SKIN_TEMP_LIMIT].opt = 0x33;
     optList[ADJ_OPT_DGPU_SKIN_TEMP_LIMIT].opt = 0x34;
     optList[ADJ_OPT_SKIN_TEMP_POWER_LIMIT].opt = 0x4a;
-    optList[ADJ_OPT_COPER].opt = 0x4b;
-    optList[ADJ_OPT_COALL].opt = 0x4C;
     optList[ADJ_OPT_GFX_CLK].opt = 0x89;
 
     optList[ADJ_OPT_ENABLE_OC].opt_psmu = 0x17;
@@ -246,7 +244,6 @@ static void setRembrandtOpts(ryzen_adj_opt_t *optList) {
     optList[ADJ_OPT_PER_CORE_OC_CLK].opt_psmu = 0x1a;
     optList[ADJ_OPT_OC_VOLT].opt_psmu = 0x1b;
     optList[ADJ_OPT_STAPM_LIMIT].opt_psmu = 0x31;
-    optList[ADJ_OPT_COGFX].opt_psmu = 0xB7;
 }
 
 static void setMendocinoOpts(ryzen_adj_opt_t *optList) {
@@ -1278,7 +1275,7 @@ static int get_core_clk_table_offset(const uint32_t table_ver, const int core) {
 			return -1;
 	}
 
-	return (baseOffset + (core *4));
+	return (baseOffset + (core * 4));
 }
 
 static int get_l3_clk_table_offset(const uint32_t table_ver) {
