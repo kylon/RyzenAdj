@@ -17,8 +17,8 @@ static void setRavenRidgeOpts(ryzen_adj_opt_t *optList) {
     optList[ADJ_OPT_VRMSOC_CURRENT].opt = 0x21;
     optList[ADJ_OPT_VRMMAX_CURRENT].opt = 0x22;
     optList[ADJ_OPT_VRMSOCMAX_CURRENT].opt = 0x23;
-    optList[ADJ_OPT_PSI0_CURRENT].opt = 0x24;
-    optList[ADJ_OPT_PSI0_SOC_CURRENT].opt = 0x25;
+    optList[ADJ_OPT_PSIO_CURRENT].opt = 0x24;
+    optList[ADJ_OPT_PSIO_SOC_CURRENT].opt = 0x25;
     optList[ADJ_OPT_PROCHOT_DEASSERTION_RAMP].opt = 0x26;
     optList[ADJ_OPT_MAX_GFXCLK_FREQ].opt = 0x46;
     optList[ADJ_OPT_MIN_GFXCLK_FREQ].opt = 0x47;
@@ -45,8 +45,8 @@ static void setPicassoOpts(ryzen_adj_opt_t *optList) {
     optList[ADJ_OPT_VRMSOC_CURRENT].opt = 0x21;
     optList[ADJ_OPT_VRMMAX_CURRENT].opt = 0x22;
     optList[ADJ_OPT_VRMSOCMAX_CURRENT].opt = 0x23;
-    optList[ADJ_OPT_PSI0_CURRENT].opt = 0x24;
-    optList[ADJ_OPT_PSI0_SOC_CURRENT].opt = 0x25;
+    optList[ADJ_OPT_PSIO_CURRENT].opt = 0x24;
+    optList[ADJ_OPT_PSIO_SOC_CURRENT].opt = 0x25;
     optList[ADJ_OPT_PROCHOT_DEASSERTION_RAMP].opt = 0x26;
     optList[ADJ_OPT_MAX_GFXCLK_FREQ].opt = 0x46;
     optList[ADJ_OPT_MIN_GFXCLK_FREQ].opt = 0x47;
@@ -73,8 +73,8 @@ static void setDaliOpts(ryzen_adj_opt_t *optList) {
     optList[ADJ_OPT_VRMSOC_CURRENT].opt = 0x21;
     optList[ADJ_OPT_VRMMAX_CURRENT].opt = 0x22;
     optList[ADJ_OPT_VRMSOCMAX_CURRENT].opt = 0x23;
-    optList[ADJ_OPT_PSI0_CURRENT].opt = 0x24;
-    optList[ADJ_OPT_PSI0_SOC_CURRENT].opt = 0x25;
+    optList[ADJ_OPT_PSIO_CURRENT].opt = 0x24;
+    optList[ADJ_OPT_PSIO_SOC_CURRENT].opt = 0x25;
     optList[ADJ_OPT_PROCHOT_DEASSERTION_RAMP].opt = 0x26;
     optList[ADJ_OPT_MAX_GFXCLK_FREQ].opt = 0x46;
     optList[ADJ_OPT_MIN_GFXCLK_FREQ].opt = 0x47;
@@ -101,8 +101,8 @@ static void setRenoirOpts(ryzen_adj_opt_t *optList) {
     optList[ADJ_OPT_VRMSOC_CURRENT].opt = 0x1b;
     optList[ADJ_OPT_VRMMAX_CURRENT].opt = 0x1c;
     optList[ADJ_OPT_VRMSOCMAX_CURRENT].opt = 0x1d;
-    optList[ADJ_OPT_PSI0_CURRENT].opt = 0x1e;
-    optList[ADJ_OPT_PSI0_SOC_CURRENT].opt = 0x1f;
+    optList[ADJ_OPT_PSIO_CURRENT].opt = 0x1e;
+    optList[ADJ_OPT_PSIO_SOC_CURRENT].opt = 0x1f;
     optList[ADJ_OPT_PROCHOT_DEASSERTION_RAMP].opt = 0x20;
     optList[ADJ_OPT_APU_SLOW_LIMIT].opt = 0x21;
     optList[ADJ_OPT_ENABLE_OC].opt = 0x2F;
@@ -135,8 +135,8 @@ static void setLucienneOpts(ryzen_adj_opt_t *optList) {
     optList[ADJ_OPT_VRMSOC_CURRENT].opt = 0x1b;
     optList[ADJ_OPT_VRMMAX_CURRENT].opt = 0x1c;
     optList[ADJ_OPT_VRMSOCMAX_CURRENT].opt = 0x1d;
-    optList[ADJ_OPT_PSI0_CURRENT].opt = 0x1e;
-    optList[ADJ_OPT_PSI0_SOC_CURRENT].opt = 0x1f;
+    optList[ADJ_OPT_PSIO_CURRENT].opt = 0x1e;
+    optList[ADJ_OPT_PSIO_SOC_CURRENT].opt = 0x1f;
     optList[ADJ_OPT_PROCHOT_DEASSERTION_RAMP].opt = 0x20;
     optList[ADJ_OPT_APU_SLOW_LIMIT].opt = 0x21;
     optList[ADJ_OPT_ENABLE_OC].opt = 0x2F;
@@ -170,8 +170,8 @@ static void setCezanneOpts(ryzen_adj_opt_t *optList) {
     optList[ADJ_OPT_VRMSOC_CURRENT].opt = 0x1b;
     optList[ADJ_OPT_VRMMAX_CURRENT].opt = 0x1c;
     optList[ADJ_OPT_VRMSOCMAX_CURRENT].opt = 0x1d;
-    optList[ADJ_OPT_PSI0_CURRENT].opt = 0x1e;
-    optList[ADJ_OPT_PSI0_SOC_CURRENT].opt = 0x1f;
+    optList[ADJ_OPT_PSIO_CURRENT].opt = 0x1e;
+    optList[ADJ_OPT_PSIO_SOC_CURRENT].opt = 0x1f;
     optList[ADJ_OPT_PROCHOT_DEASSERTION_RAMP].opt = 0x20;
     optList[ADJ_OPT_APU_SLOW_LIMIT].opt = 0x21;
     optList[ADJ_OPT_ENABLE_OC].opt = 0x2F;
@@ -894,7 +894,7 @@ static int get_dgpu_skin_temp_value_table_offset(const uint32_t table_ver) {
 	return -1;
 }
 
-static int get_psi0_current_table_offset(const uint32_t table_ver) {
+static int get_psio_current_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
 		case 0x1E0001:
 		case 0x1E0002:
@@ -927,7 +927,7 @@ static int get_psi0_current_table_offset(const uint32_t table_ver) {
 	return -1;
 }
 
-static int get_psi0soc_current_table_offset(const uint32_t table_ver) {
+static int get_psiosoc_current_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
 		case 0x1E0001:
 		case 0x1E0002:
@@ -1623,8 +1623,8 @@ void adj_init_pm_table_offsets(ryzen_adj_opt_t *optList, const uint32_t table_ve
 	optList[ADJ_OPT_VRMMAX_CURRENT].pm_table_opt_value_offt = get_vrmmax_current_value_table_offset(table_ver);
 	optList[ADJ_OPT_VRMSOCMAX_CURRENT].pm_table_opt_offt = get_vrmsocmax_current_table_offset(table_ver);
 	optList[ADJ_OPT_VRMSOCMAX_CURRENT].pm_table_opt_value_offt = get_vrmsocmax_current_value_table_offset(table_ver);
-	optList[ADJ_OPT_PSI0_CURRENT].pm_table_opt_offt = get_psi0_current_table_offset(table_ver);
-	optList[ADJ_OPT_PSI0_SOC_CURRENT].pm_table_opt_offt = get_psi0soc_current_table_offset(table_ver);
+	optList[ADJ_OPT_PSIO_CURRENT].pm_table_opt_offt = get_psio_current_table_offset(table_ver);
+	optList[ADJ_OPT_PSIO_SOC_CURRENT].pm_table_opt_offt = get_psiosoc_current_table_offset(table_ver);
 	optList[ADJ_OPT_APU_SKIN_TEMP_LIMIT].pm_table_opt_offt = get_apu_skin_temp_limit_table_offset(table_ver);
 	optList[ADJ_OPT_APU_SKIN_TEMP_LIMIT].pm_table_opt_value_offt = get_apu_skin_temp_value_table_offset(table_ver);
 	optList[ADJ_OPT_DGPU_SKIN_TEMP_LIMIT].pm_table_opt_offt = get_dgpu_skin_temp_limit_table_offset(table_ver);
