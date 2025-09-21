@@ -4,8 +4,8 @@
 
 #include "smu_access.h"
 
-static uint32_t c2pmsg_argX_addr(const uint32_t y, const uint32_t x) {
-	return (y + 4 * x);
+static uint32_t c2pmsg_argX_addr(const uint32_t base, const uint32_t offt) {
+	return (base + 4 * offt);
 }
 
 static int smu_service_test(const smu_access_t *smu) {
