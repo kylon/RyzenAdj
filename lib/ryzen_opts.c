@@ -319,6 +319,18 @@ static void setHawkpointOpts(ryzen_adj_opt_t *optList) {
     optList[ADJ_OPT_COGFX].opt_psmu = 0xB7;
 }
 
+static void setDragonRangeOpts(ryzen_adj_opt_t *optList) {
+    optList[ADJ_OPT_STAPM_LIMIT].opt = 0x4f;
+    optList[ADJ_OPT_FAST_LIMIT].opt = 0x3e;
+    optList[ADJ_OPT_SLOW_LIMIT].opt = 0x5f;
+    optList[ADJ_OPT_SLOW_TIME].opt = 0x60;
+    optList[ADJ_OPT_STAPM_TIME].opt = 0x4e;
+    optList[ADJ_OPT_TCTL_TEMP].opt = 0x3f;
+    optList[ADJ_OPT_VRM_CURRENT].opt = 0x3c;
+    optList[ADJ_OPT_COPER].opt = 0x6;
+    optList[ADJ_OPT_COALL].opt = 0x7;
+}
+
 static void setKrackanpointOpts(ryzen_adj_opt_t *optList) {
 	optList[ADJ_OPT_CCLK_BUSY].opt = 0x11;
 	optList[ADJ_OPT_CCLK_SETPOINT].opt = 0x12;
@@ -385,6 +397,18 @@ static void setStrixhaloOpts(ryzen_adj_opt_t *optList) {
     optList[ADJ_OPT_GFX_CLK].opt = 0x89;
 }
 
+static void setFireRangeOpts(ryzen_adj_opt_t *optList) {
+	optList[ADJ_OPT_STAPM_LIMIT].opt = 0x4f;
+	optList[ADJ_OPT_FAST_LIMIT].opt = 0x3e;
+	optList[ADJ_OPT_SLOW_LIMIT].opt = 0x5f;
+	optList[ADJ_OPT_SLOW_TIME].opt = 0x60;
+	optList[ADJ_OPT_STAPM_TIME].opt = 0x4e;
+	optList[ADJ_OPT_TCTL_TEMP].opt = 0x3f;
+	optList[ADJ_OPT_VRM_CURRENT].opt = 0x3c;
+	optList[ADJ_OPT_COPER].opt = 0x6;
+	optList[ADJ_OPT_COALL].opt = 0x7;
+}
+
 static int get_apu_slow_limit_table_offset(const uint32_t table_ver) {
 	switch (table_ver) {
 		case 0x370000:
@@ -405,7 +429,9 @@ static int get_apu_slow_limit_table_offset(const uint32_t table_ver) {
 		case 0x4C0007:
 		case 0x4C0008:
 		case 0x4C0009:
+		case 0x5D0008: // Strix Point - looks correct from dumping table, defaults to 45W
 		case 0x64020c: // StrixHalo - looks correct from dumping table, defaults to 70W
+		case 0x650005: // Krackan Point
 			return 0x18;
 		default:
 			break;
@@ -431,7 +457,9 @@ static int get_apu_slow_value_table_offset(const uint32_t table_ver) {
 		case 0x450005:
 		case 0x4C0006:
 		case 0x4C0009:
+		case 0x5D0008: // Strix Point - untested, always 0?
 		case 0x64020c: // StrixHalo - untested!
+		case 0x650005: // Krackan Point
 			return 0x1C;
 		default:
 			break;
@@ -467,6 +495,9 @@ static int get_vrm_current_table_offset(const uint32_t table_ver) {
 		case 0x4C0008:
 		case 0x4C0009:
 			return 0x20;
+		case 0x5D0008: // Strix Point - tested, defaults to 70, max 70
+		case 0x650005: // Krackan Point
+			return 0x30;
 		default:
 			break;
 	}
@@ -501,6 +532,9 @@ static int get_vrm_current_value_table_offset(const uint32_t table_ver) {
 		case 0x4C0008:
 		case 0x4C0009:
 			return 0x24;
+		case 0x5D0008: // Strix Point - looks correct from dumping table
+		case 0x650005: // Krackan Point
+			return 0x34;
 		default:
 			break;
 	}
@@ -535,6 +569,9 @@ static int get_vrmsoc_current_table_offset(const uint32_t table_ver) {
 		case 0x4C0008:
 		case 0x4C0009:
 			return 0x28;
+		case 0x5D0008: // Strix Point - tested, defaults to 30, max 30
+		case 0x650005: // Krackan Point
+			return 0x38;
 		default:
 			break;
 	}
@@ -569,6 +606,9 @@ static int get_vrmsoc_current_value_table_offset(const uint32_t table_ver) {
 		case 0x4C0008:
 		case 0x4C0009:
 			return 0x2C;
+		case 0x5D0008: // Strix Point - looks correct from dumping table
+		case 0x650005: // Krackan Point
+			return 0x3C;
 		default:
 			break;
 	}
@@ -740,6 +780,8 @@ static int get_tctl_temp_table_offset(const uint32_t table_ver) {
 		case 0x4C0007:
 		case 0x4C0008:
 		case 0x4C0009:
+		case 0x5D0008: // Strix Point - untested
+		case 0x650005: // Krackan Point
 			return 0x40;
 		default:
 			break;
@@ -776,6 +818,8 @@ static int get_tctl_temp_value_table_offset(const uint32_t table_ver) {
 		case 0x4C0007:
 		case 0x4C0008:
 		case 0x4C0009:
+		case 0x5D0008: // strix point - tested
+		case 0x650005: // Krackan Point
 			return 0x44;
 		default:
 			break;
@@ -803,6 +847,7 @@ static int get_apu_skin_temp_limit_table_offset(const uint32_t table_ver) {
 		case 0x4C0007:
 		case 0x4C0008:
 		case 0x4C0009:
+		case 0x5D0008: // Strix Point - untested
 		case 0x64020c:
 			return 0x58;
 		default:
@@ -831,6 +876,7 @@ static int get_apu_skin_temp_value_table_offset(const uint32_t table_ver) {
 		case 0x4C0007:
 		case 0x4C0008:
 		case 0x4C0009:
+		case 0x5D0008: // Strix Point - this is gpu_metrics_v3_0.temperature_soc, !=gpu_metrics_v3_0.temperature_skin
 		case 0x64020c:
 			return 0x5C;
 		default:
@@ -860,6 +906,8 @@ static int get_dgpu_skin_temp_limit_table_offset(const uint32_t table_ver) {
 		case 0x4C0009:
 		case 0x64020c:
 			return 0x60;
+		case 0x5D0008: // Strix Point - tested
+			return 0x68;
 		default:
 			break;
 	}
@@ -887,6 +935,8 @@ static int get_dgpu_skin_temp_value_table_offset(const uint32_t table_ver) {
 		case 0x4C0009:
 		case 0x64020c:
 			return 0x64;
+		case 0x5D0008: // Strix Point - calculated from corresponding limit + 0x4, 0 on my device due to no dGPU
+			return 0x6c;
 		default:
 			break;
 	}
@@ -1097,6 +1147,8 @@ static int get_slow_time_table_offset(const uint32_t table_ver) {
 		case 0x4C0008:
 		case 0x4C0009:
 			return 0x91C;
+		case 0x5D0008: // Strix Point - tested, defaults to 5 (low-power/balanced) or 15 (performance), max 30
+			return 0x9C0;
 		default:
 			break;
 	}
@@ -1166,6 +1218,9 @@ static int get_core_power_table_offset(const uint32_t table_ver, const int core)
 		case 0x400005:
 			baseOffset = 0x320;
 			break;
+		case 0x5D0008: // Strix Point - manufacturer-disabled cores are 0W (12 cores in total)
+			baseOffset = 0x9D8;
+			break;
 		case 0x64020c: // Strix Halo
 			baseOffset = 0xB90;
 			break;
@@ -1199,6 +1254,9 @@ static int get_core_volt_table_offset(const uint32_t table_ver, const int core) 
 		case 0x400004:
 		case 0x400005:
 			baseOffset = 0x340;
+			break;
+		case 0x5D0008: // Strix Point - manufacturer-disabled cores are 0V
+			baseOffset = 0xA08;
 			break;
 		case 0x64020c: // Strix Halo
 			baseOffset = 0xBD0;
@@ -1234,6 +1292,9 @@ static int get_core_temp_table_offset(const uint32_t table_ver, const int core) 
 		case 0x400005:
 			baseOffset = 0x360;
 			break;
+		case 0x5D0008: // Strix Point - manufacturer-disabled cores also have temp collected
+			baseOffset = 0xA38;
+			break;
 		case 0x64020c: // Strix Halo
 			baseOffset = 0xC10;
 			break;
@@ -1267,6 +1328,9 @@ static int get_core_clk_table_offset(const uint32_t table_ver, const int core) {
 		case 0x400004:
 		case 0x400005:
 			baseOffset = 0x3c0;
+			break;
+		case 0x5D0008: // Strix Point - manufacturer-disabled cores are 0GHz
+			baseOffset = 0xA68;
 			break;
 		case 0x64020c:
 			baseOffset = 0xc50;
@@ -1387,6 +1451,8 @@ static int get_gfx_clk_table_offset(const uint32_t table_ver) {
 			return 0x648;
 		case 0x3F0000: //Van Gogh
 			return 0x388;
+		case 0x5D0008:
+			return 0x4C0; // 4C0 and 4C4 are always close to each other, but 4C0 seems more correct
 		case 0x64020c: // Strix Halo
 			return 0x558;
 		default:
@@ -1417,6 +1483,8 @@ static int get_gfx_volt_table_offset(const uint32_t table_ver) {
 			return 0x63C;
 		case 0x3F0000: //Van Gogh
 			return 0x37C;
+		case 0x5D0008: // Strix Point
+			return 0x4B8;
 		case 0x64020c: // Strix Halo
 			return 0x54C;
 		default:
@@ -1447,6 +1515,8 @@ static int get_gfx_temp_table_offset(const uint32_t table_ver) {
 			return 0x640;
 		case 0x3F0000: //Van Gogh
 			return 0x380;
+		case 0x5D0008: // Strix Point
+			return 0x4C8;
 		case 0x64020c: // Strix Halo
 			return 0x550;
 		default:
@@ -1471,6 +1541,8 @@ static int get_fclk_table_offset(const uint32_t table_ver) {
 		case 0x400004:
 		case 0x400005:
 			return 0x664;
+		case 0x5D0008: // Strix Point - tested
+			return 0x4E0;
 		default:
 			break;
 	}
@@ -1493,6 +1565,8 @@ static int get_mem_clk_table_offset(const uint32_t table_ver) {
 		case 0x400004:
 		case 0x400005:
 			return 0x66c;
+		case 0x5D0008:
+			return 0x4EC;
 		default:
 			break;
 	}
@@ -1558,6 +1632,8 @@ static int get_socket_power_table_offset(const uint32_t table_ver) {
 			return 0x98;
 		case 0x3F0000: //Van Gogh
 			return 0xA8;
+		case 0x5D0008: // Strix Point - tested
+			return 0xD0;
 		default:
 			break;
 	}
@@ -1594,9 +1670,11 @@ ryzen_adj_opt_t *adj_init_opt_list(const RYZEN_FAMILY family) {
 		case FAM_MENDOCINO:     setMendocinoOpts(optList); break;
 		case FAM_PHOENIX:       setPhoenixOpts(optList); break;
 		case FAM_HAWKPOINT:     setHawkpointOpts(optList); break;
+    	case FAM_DRAGONRANGE:	setDragonRangeOpts(optList); break;
 		case FAM_KRACKANPOINT:	setKrackanpointOpts(optList); break;
 		case FAM_STRIXPOINT:    setStrixpointOpts(optList); break;
 		case FAM_STRIXHALO:     setStrixhaloOpts(optList); break;
+    	case FAM_FIRERANGE:		setFireRangeOpts(optList); break;
         default: break;
     }
 

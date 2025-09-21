@@ -89,6 +89,7 @@ static RYZEN_FAMILY cpuid_load_family() {
                 case 80: return FAM_CEZANNE;
                 case 64:
                 case 68: return FAM_REMBRANDT;
+                case 97: return FAM_DRAGONRANGE;
                 case 116:
                 case 120: return FAM_PHOENIX;
                 case 117: return FAM_HAWKPOINT;
@@ -100,6 +101,7 @@ static RYZEN_FAMILY cpuid_load_family() {
             switch (model) {
                 case 32:
                 case 36: return FAM_STRIXPOINT;
+                case 68: return FAM_FIRERANGE;
                 case 96: return FAM_KRACKANPOINT;
                 case 112: return FAM_STRIXHALO;
                 default: break;
@@ -180,7 +182,8 @@ static ADJ_ERROR request_table_ver_and_size() {
         case 0x4C0008: ry->table_size = 0xAF0; break;
         case 0x4C0007:
         case 0x4C0009: ry->table_size = 0xB00; break;
-        case 0x5D0008: ry->table_size = 0xD54; break;
+        case 0x5D0008:
+        case 0x5D0009: ry->table_size = 0xD54; break;
         case 0x64020c: ry->table_size = 0xE50; break;
 
         // use a larger size then the largest known table to be able to test real table size of unknown tables
