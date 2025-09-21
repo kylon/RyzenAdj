@@ -430,7 +430,7 @@ static int get_apu_slow_limit_table_offset(const uint32_t table_ver) {
 		case 0x4C0008:
 		case 0x4C0009:
 		case 0x5D0008: // Strix Point - looks correct from dumping table, defaults to 45W
-		case 0x64020c: // StrixHalo - looks correct from dumping table, defaults to 70W
+		case 0x64020C: // StrixHalo - looks correct from dumping table, defaults to 70W
 		case 0x650005: // Krackan Point
 			return 0x18;
 		default:
@@ -458,7 +458,7 @@ static int get_apu_slow_value_table_offset(const uint32_t table_ver) {
 		case 0x4C0006:
 		case 0x4C0009:
 		case 0x5D0008: // Strix Point - untested, always 0?
-		case 0x64020c: // StrixHalo - untested!
+		case 0x64020C: // StrixHalo - untested!
 		case 0x650005: // Krackan Point
 			return 0x1C;
 		default:
@@ -760,7 +760,7 @@ static int get_tctl_temp_table_offset(const uint32_t table_ver) {
 		case 0x1E0005:
 		case 0x1E000A:
 		case 0x1E0101:
-		case 0x64020c:
+		case 0x64020C:
 			return 0x58; //use core1 because core0 is not reported on dual core cpus
 		case 0x370000:
 		case 0x370001:
@@ -798,7 +798,7 @@ static int get_tctl_temp_value_table_offset(const uint32_t table_ver) {
 		case 0x1E0005:
 		case 0x1E000A:
 		case 0x1E0101:
-		case 0x64020c:
+		case 0x64020C:
 			return 0x5C; //use core1 because core0 is not reported on dual core cpus
 		case 0x370000:
 		case 0x370001:
@@ -848,7 +848,7 @@ static int get_apu_skin_temp_limit_table_offset(const uint32_t table_ver) {
 		case 0x4C0008:
 		case 0x4C0009:
 		case 0x5D0008: // Strix Point - untested
-		case 0x64020c:
+		case 0x64020C:
 			return 0x58;
 		default:
 			break;
@@ -877,7 +877,7 @@ static int get_apu_skin_temp_value_table_offset(const uint32_t table_ver) {
 		case 0x4C0008:
 		case 0x4C0009:
 		case 0x5D0008: // Strix Point - this is gpu_metrics_v3_0.temperature_soc, !=gpu_metrics_v3_0.temperature_skin
-		case 0x64020c:
+		case 0x64020C:
 			return 0x5C;
 		default:
 			break;
@@ -904,7 +904,7 @@ static int get_dgpu_skin_temp_limit_table_offset(const uint32_t table_ver) {
 		case 0x4C0007:
 		case 0x4C0008:
 		case 0x4C0009:
-		case 0x64020c:
+		case 0x64020C:
 			return 0x60;
 		case 0x5D0008: // Strix Point - tested
 			return 0x68;
@@ -933,7 +933,7 @@ static int get_dgpu_skin_temp_value_table_offset(const uint32_t table_ver) {
 		case 0x4C0007:
 		case 0x4C0008:
 		case 0x4C0009:
-		case 0x64020c:
+		case 0x64020C:
 			return 0x64;
 		case 0x5D0008: // Strix Point - calculated from corresponding limit + 0x4, 0 on my device due to no dGPU
 			return 0x6c;
@@ -1178,7 +1178,7 @@ static int is_core_available_in_table(const uint32_t table_ver, const int core) 
 
 			return 1;
 		}
-		case 0x64020c: { // Strix Halo
+		case 0x64020C: { // Strix Halo
 			if (core > 15)
 				break;
 
@@ -1221,7 +1221,7 @@ static int get_core_power_table_offset(const uint32_t table_ver, const int core)
 		case 0x5D0008: // Strix Point - manufacturer-disabled cores are 0W (12 cores in total)
 			baseOffset = 0x9D8;
 			break;
-		case 0x64020c: // Strix Halo
+		case 0x64020C: // Strix Halo
 			baseOffset = 0xB90;
 			break;
 		default:
@@ -1258,7 +1258,7 @@ static int get_core_volt_table_offset(const uint32_t table_ver, const int core) 
 		case 0x5D0008: // Strix Point - manufacturer-disabled cores are 0V
 			baseOffset = 0xA08;
 			break;
-		case 0x64020c: // Strix Halo
+		case 0x64020C: // Strix Halo
 			baseOffset = 0xBD0;
 			break;
 		default:
@@ -1295,7 +1295,7 @@ static int get_core_temp_table_offset(const uint32_t table_ver, const int core) 
 		case 0x5D0008: // Strix Point - manufacturer-disabled cores also have temp collected
 			baseOffset = 0xA38;
 			break;
-		case 0x64020c: // Strix Halo
+		case 0x64020C: // Strix Halo
 			baseOffset = 0xC10;
 			break;
 		default:
@@ -1332,7 +1332,7 @@ static int get_core_clk_table_offset(const uint32_t table_ver, const int core) {
 		case 0x5D0008: // Strix Point - manufacturer-disabled cores are 0GHz
 			baseOffset = 0xA68;
 			break;
-		case 0x64020c:
+		case 0x64020C:
 			baseOffset = 0xc50;
 			break;
 		default:
@@ -1453,7 +1453,7 @@ static int get_gfx_clk_table_offset(const uint32_t table_ver) {
 			return 0x388;
 		case 0x5D0008:
 			return 0x4C0; // 4C0 and 4C4 are always close to each other, but 4C0 seems more correct
-		case 0x64020c: // Strix Halo
+		case 0x64020C: // Strix Halo
 			return 0x558;
 		default:
 			break;
@@ -1485,7 +1485,7 @@ static int get_gfx_volt_table_offset(const uint32_t table_ver) {
 			return 0x37C;
 		case 0x5D0008: // Strix Point
 			return 0x4B8;
-		case 0x64020c: // Strix Halo
+		case 0x64020C: // Strix Halo
 			return 0x54C;
 		default:
 			break;
@@ -1517,7 +1517,7 @@ static int get_gfx_temp_table_offset(const uint32_t table_ver) {
 			return 0x380;
 		case 0x5D0008: // Strix Point
 			return 0x4C8;
-		case 0x64020c: // Strix Halo
+		case 0x64020C: // Strix Halo
 			return 0x550;
 		default:
 			break;
