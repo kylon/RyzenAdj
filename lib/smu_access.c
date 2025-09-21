@@ -99,7 +99,6 @@ static uint32_t getPSMUC2PMsgResponseAddress(const RYZEN_FAMILY family) {
 		case FAM_DRAGONRANGE:
 		case FAM_FIRERANGE:
 			return 0x03B10570;
-
 		default:
 			break;
 	}
