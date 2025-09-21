@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL
 #pragma once
 
 #include "../osdep.h"
